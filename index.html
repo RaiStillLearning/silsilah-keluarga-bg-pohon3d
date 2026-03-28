@@ -5,11 +5,149 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
-			body { margin: 0; overflow: hidden; }
+			body { margin: 0; overflow: hidden; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 			canvas { display: block; }
+
+			/* --- Profile Card Styles --- */
+			.couple-container {
+				display: flex;
+				gap: 10px;
+				cursor: pointer;
+				pointer-events: auto;
+				transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+				transform-origin: center center; /* critical for scaling from the middle */
+			}
+			.couple-container:hover {
+				transform: translateY(-5px) scale(1.05); /* Enlarge on hover */
+			}
+			.profile-card {
+				background: rgba(255, 255, 255, 0.95);
+				backdrop-filter: blur(8px);
+				border-radius: 12px;
+				padding: 12px;
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+				min-width: 130px;
+				max-width: 150px;
+				border: 2px solid transparent;
+			}
+			.husband-card {
+				background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+				border-color: #90caf9;
+			}
+			.wife-card {
+				background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+				border-color: #a5d6a7;
+			}
+			.profile-avatar {
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				object-fit: cover;
+				margin-bottom: 8px;
+				border: 2px solid white;
+				background-color: #f5f5f5;
+				box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+			}
+			.profile-name {
+				font-weight: 700;
+				font-size: 14px;
+				color: #2c3e50;
+				margin: 0 0 4px 0;
+			}
+			.profile-details {
+				font-size: 11px;
+				color: #555;
+				line-height: 1.3;
+				margin: 0;
+			}
+			/* --- D3 Overlay Styles --- */
+			#d3-overlay {
+				position: fixed;
+				top: 0; left: 0; right: 0; bottom: 0;
+				background: #FFF8F0;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1);
+				z-index: 100; /* above webgl */
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			#d3-overlay.active {
+				opacity: 1;
+				pointer-events: auto;
+			}
+			#d3-container {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+			}
+			.d3-controls {
+				position: absolute;
+				top: 30px;
+				left: 30px;
+				display: flex;
+				gap: 15px;
+				z-index: 101;
+			}
+			.d3-btn {
+				padding: 12px 24px;
+				background: rgba(44, 62, 80, 0.05);
+				color: #2c3e50;
+				border: 1px solid rgba(44, 62, 80, 0.2);
+				border-radius: 8px;
+				cursor: pointer;
+				font-size: 15px;
+				font-weight: bold;
+				font-family: 'Inter', sans-serif;
+				transition: background 0.2s, transform 0.2s;
+			}
+			.d3-btn:hover {
+				background: rgba(44, 62, 80, 0.1);
+				transform: scale(1.05);
+			}
+
+			/* ThreeJS Canvas Fading */
+			#webgl-container {
+				transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1);
+				width: 100vw;
+				height: 100vh;
+			}
+			#webgl-container.hidden {
+				opacity: 0;
+				pointer-events: none;
+			}
+			
+			/* D3 SVG Styles */
+			.link {
+				fill: none;
+				stroke: #81c784;
+				stroke-width: 4px;
+				stroke-opacity: 0.6;
+				transition: stroke-opacity 0.2s;
+			}
+			.node foreignObject {
+				overflow: visible;
+			}
 		</style>
 	</head>
 	<body>
+		<div id="webgl-container"></div>
+		<div id="d3-overlay">
+			<div class="d3-controls">
+				<button class="d3-btn" id="d3-back-btn">← Back to 3D Tree</button>
+				<button class="d3-btn" id="d3-up-btn">↑ Previous Generation</button>
+			</div>
+			<div id="d3-container"></div>
+		</div>
 
 		<!-- 📦 This import map tells the browser where to find the Three.js library and its addons. -->
 		<script type="importmap">
@@ -21,6 +159,7 @@
 				}
 			}
 		</script>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
 
 		<script type="module">
 			// =============================================================================
@@ -58,6 +197,8 @@
 			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
             import { GUI } from 'dat.gui';
             import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+			import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+			import TWEEN from 'three/addons/libs/tween.module.js';
 
             // --- ⚙️ 1. GLOBAL SETTINGS AND CONSTANTS ---
             // =================================================================
@@ -81,7 +222,15 @@
             renderer.shadowMap.enabled = true; // Let there be shadows!
             renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Makes shadows look softer and more realistic.
             renderer.toneMapping = THREE.ACESFilmicToneMapping; // A tone mapping algorithm that gives a cinematic look.
-			document.body.appendChild(renderer.domElement); // Add the renderer's canvas to our HTML page.
+			document.getElementById('webgl-container').appendChild(renderer.domElement); 
+
+			// --- 🌐 NEW: CSS2DRenderer Setup ---
+			const labelRenderer = new CSS2DRenderer();
+			labelRenderer.setSize(window.innerWidth, window.innerHeight);
+			labelRenderer.domElement.style.position = 'absolute';
+			labelRenderer.domElement.style.top = '0px';
+			labelRenderer.domElement.style.pointerEvents = 'none'; // Allow OrbitControls below it to keep working
+			document.getElementById('webgl-container').appendChild(labelRenderer.domElement);
 
 			const controls = new OrbitControls(camera, renderer.domElement); // Allows us to control the camera with the mouse.
 			controls.enableDamping = true; // Creates a smooth, coasting effect for camera movement.
@@ -437,63 +586,369 @@
 
             // --- 🎛️ 6. GRAPHICAL USER INTERFACE (dat.gui) ---
             // =================================================================
-            const gui = new GUI();
+            // const gui = new GUI();
             
-            const lightControlsFolder = gui.addFolder('Lighting Controls');
-            lightControlsFolder.add(ambientLight, 'intensity', 0, 5, 0.01).name('Ambient Light');
-            lightControlsFolder.add(directionalLight, 'intensity', 0, 5, 0.05).name('Directional Light');
-            lightControlsFolder.add(scene, 'environmentIntensity', 0, 5, 0.01).name('HDRI Intensity');            
-            lightControlsFolder.open();
+            // const lightControlsFolder = gui.addFolder('Lighting Controls');
+            // lightControlsFolder.add(ambientLight, 'intensity', 0, 5, 0.01).name('Ambient Light');
+            // lightControlsFolder.add(directionalLight, 'intensity', 0, 5, 0.05).name('Directional Light');
+            // lightControlsFolder.add(scene, 'environmentIntensity', 0, 5, 0.01).name('HDRI Intensity');            
+            // lightControlsFolder.open();
 
-            const grassFolder = gui.addFolder('Grass Controls');
-            grassFolder.addColor(grassParameters, 'baseColor').name('Base Color').onChange(value => {
-                grassUniforms.uBaseColor.value.set(value);
-            });
-            grassFolder.addColor(grassParameters, 'tipColor').name('Tip Color').onChange(value => {
-                grassUniforms.uTipColor.value.set(value);
-            });
-            grassFolder.add(grassUniforms.uShadowDarkness, 'value', 0.0, 1.0).name('Shadow Intensity');
-            grassFolder.open();
+            // const grassFolder = gui.addFolder('Grass Controls');
+            // grassFolder.addColor(grassParameters, 'baseColor').name('Base Color').onChange(value => {
+            //     grassUniforms.uBaseColor.value.set(value);
+            // });
+            // grassFolder.addColor(grassParameters, 'tipColor').name('Tip Color').onChange(value => {
+            //     grassUniforms.uTipColor.value.set(value);
+            // });
+            // grassFolder.add(grassUniforms.uShadowDarkness, 'value', 0.0, 1.0).name('Shadow Intensity');
+            // grassFolder.open();
             
-            const lightFolder = gui.addFolder('Sun & Shadow');
-            lightFolder.add(sunPosition, 'elevation', 0, 90, 1).name('Sun Elevation').onChange(updateSunPosition);
-            lightFolder.add(sunPosition, 'azimuth', 0, 360, 1).name('Sun Azimuth').onChange(updateSunPosition);
-            lightFolder.add(directionalLight.shadow, 'bias', -0.01, 0.01, 0.0001).name('Shadow Bias');
-            lightFolder.open();
+            // const lightFolder = gui.addFolder('Sun & Shadow');
+            // lightFolder.add(sunPosition, 'elevation', 0, 90, 1).name('Sun Elevation').onChange(updateSunPosition);
+            // lightFolder.add(sunPosition, 'azimuth', 0, 360, 1).name('Sun Azimuth').onChange(updateSunPosition);
+            // lightFolder.add(directionalLight.shadow, 'bias', -0.01, 0.01, 0.0001).name('Shadow Bias');
+            // lightFolder.open();
             
-            const windFolder = gui.addFolder('Grass Wind');
-            windFolder.add(windUniforms.uWindStrength, 'value', 0, 0.5, 0.01).name('Strength');
-            windFolder.add(windUniforms.uWindSpeed, 'value', 0, 5, 0.01).name('Speed');
-            windFolder.add(windUniforms.uWindDirection.value, 'x', -1, 1, 0.01).name('Direction X');
-            windFolder.add(windUniforms.uWindDirection.value, 'y', -1, 1, 0.01).name('Direction Z');
-            windFolder.open();
+            // const windFolder = gui.addFolder('Grass Wind');
+            // windFolder.add(windUniforms.uWindStrength, 'value', 0, 0.5, 0.01).name('Strength');
+            // windFolder.add(windUniforms.uWindSpeed, 'value', 0, 5, 0.01).name('Speed');
+            // windFolder.add(windUniforms.uWindDirection.value, 'x', -1, 1, 0.01).name('Direction X');
+            // windFolder.add(windUniforms.uWindDirection.value, 'y', -1, 1, 0.01).name('Direction Z');
+            // windFolder.open();
 
-            // Helper functions to update all leaf materials at once.
-            const updateAllMaterials = (uniformName, value) => { canopyMaterials.forEach(m => m.userData.shader && (m.userData.shader.uniforms[uniformName].value = value)); };
-            const updateAllColors = (uniformName, colorObject) => { canopyMaterials.forEach(m => m.userData.shader && m.userData.shader.uniforms[uniformName].value.copy(colorObject)); };
+            // // Helper functions to update all leaf materials at once.
+            // const updateAllMaterials = (uniformName, value) => { canopyMaterials.forEach(m => m.userData.shader && (m.userData.shader.uniforms[uniformName].value = value)); };
+            // const updateAllColors = (uniformName, colorObject) => { canopyMaterials.forEach(m => m.userData.shader && m.userData.shader.uniforms[uniformName].value.copy(colorObject)); };
 
-            const leavesFolder = gui.addFolder('Volumetric Gradient (Leaves)');
-            leavesFolder.add(gradientSettings, 'gradientStart', -1, 5, 0.01).name('Start').onChange(v => updateAllMaterials('uGradientStart', v));
-            leavesFolder.add(gradientSettings, 'gradientEnd', -1, 5, 0.01).name('End').onChange(v => updateAllMaterials('uGradientEnd', v));
-            leavesFolder.addColor(guiProxy, 'shadowColor').name('Shadow Color').onChange(() => { gradientSettings.shadowColor.set(guiProxy.shadowColor); updateAllColors('uShadowColor', gradientSettings.shadowColor); });
-            leavesFolder.addColor(guiProxy, 'litColor').name('Lit Color').onChange(() => { gradientSettings.litColor.set(guiProxy.litColor); updateAllColors('uLitColor', gradientSettings.litColor); });
-            leavesFolder.add(gradientSettings, 'highlightStart', -1, 5, 0.01).name('Highlight Start').onChange(v => updateAllMaterials('uHighlightStart', v));
-            leavesFolder.add(gradientSettings, 'highlightEnd', -1, 5, 0.01).name('Highlight End').onChange(v => updateAllMaterials('uHighlightEnd', v));
-            leavesFolder.addColor(guiProxy, 'highlightColor').name('Highlight Color').onChange(() => { gradientSettings.highlightColor.set(guiProxy.highlightColor); updateAllColors('uHighlightColor', gradientSettings.highlightColor); });
-            leavesFolder.add(gradientSettings, 'leafShadowDarkness', 0, 1, 0.01).name('Shadow Int.').onChange(v => updateAllMaterials('uLeafShadowDarkness', v));
-            leavesFolder.open();
+            // const leavesFolder = gui.addFolder('Volumetric Gradient (Leaves)');
+            // leavesFolder.add(gradientSettings, 'gradientStart', -1, 5, 0.01).name('Start').onChange(v => updateAllMaterials('uGradientStart', v));
+            // leavesFolder.add(gradientSettings, 'gradientEnd', -1, 5, 0.01).name('End').onChange(v => updateAllMaterials('uGradientEnd', v));
+            // leavesFolder.addColor(guiProxy, 'shadowColor').name('Shadow Color').onChange(() => { gradientSettings.shadowColor.set(guiProxy.shadowColor); updateAllColors('uShadowColor', gradientSettings.shadowColor); });
+            // leavesFolder.addColor(guiProxy, 'litColor').name('Lit Color').onChange(() => { gradientSettings.litColor.set(guiProxy.litColor); updateAllColors('uLitColor', gradientSettings.litColor); });
+            // leavesFolder.add(gradientSettings, 'highlightStart', -1, 5, 0.01).name('Highlight Start').onChange(v => updateAllMaterials('uHighlightStart', v));
+            // leavesFolder.add(gradientSettings, 'highlightEnd', -1, 5, 0.01).name('Highlight End').onChange(v => updateAllMaterials('uHighlightEnd', v));
+            // leavesFolder.addColor(guiProxy, 'highlightColor').name('Highlight Color').onChange(() => { gradientSettings.highlightColor.set(guiProxy.highlightColor); updateAllColors('uHighlightColor', gradientSettings.highlightColor); });
+            // leavesFolder.add(gradientSettings, 'leafShadowDarkness', 0, 1, 0.01).name('Shadow Int.').onChange(v => updateAllMaterials('uLeafShadowDarkness', v));
+            // leavesFolder.open();
 
-            const leavesWindFolder = gui.addFolder('Leaves Wind');
-            leavesWindFolder.add(windSettings, 'strength', 0, 1, 0.01).name('Strength').onChange(v => updateAllMaterials('uWindStrength', v));
-            leavesWindFolder.add(windSettings, 'frequency', 0, 5, 0.01).name('Frequency').onChange(v => updateAllMaterials('uWindFrequency', v));
-            leavesWindFolder.add(windSettings, 'speed', 0, 5, 0.1).name('Speed').onChange(v => updateAllMaterials('uWindSpeed', v));
-            leavesWindFolder.open();
+            // const leavesWindFolder = gui.addFolder('Leaves Wind');
+            // leavesWindFolder.add(windSettings, 'strength', 0, 1, 0.01).name('Strength').onChange(v => updateAllMaterials('uWindStrength', v));
+            // leavesWindFolder.add(windSettings, 'frequency', 0, 5, 0.01).name('Frequency').onChange(v => updateAllMaterials('uWindFrequency', v));
+            // leavesWindFolder.add(windSettings, 'speed', 0, 5, 0.1).name('Speed').onChange(v => updateAllMaterials('uWindSpeed', v));
+            // leavesWindFolder.open();
 
-            const sceneFolder = gui.addFolder('Global Scene Controls');
-            sceneFolder.add(globalShaderSettings, 'shadowDarkness', 0.0, 1.0).name('Shadow Intensity').onChange(value => {
-                globalShaderUniforms.uShadowDarkness.value = value;
-            });
-            sceneFolder.open();
+            // const sceneFolder = gui.addFolder('Global Scene Controls');
+            // sceneFolder.add(globalShaderSettings, 'shadowDarkness', 0.0, 1.0).name('Shadow Intensity').onChange(value => {
+            //     globalShaderUniforms.uShadowDarkness.value = value;
+            // });
+            // sceneFolder.open();
+
+			// --- 🧑‍🤝‍🧑 NEW: Profiles and D3 Transitions ---
+			// =================================================================
+			
+			let lastProfilePos = null;
+			let lastLookDir = null;
+
+			// Global variables for D3
+			let svgGroup;
+			let treeLayout;
+			let root;
+			let currentId = 0;
+			let activeNode = null;
+
+			function renderD3Tree(coupleData) {
+				const container = document.getElementById('d3-container');
+				container.innerHTML = ''; // clear previous
+				const width = container.clientWidth || window.innerWidth;
+				const height = container.clientHeight || window.innerHeight;
+
+				const margin = {top: 100, right: 0, bottom: 200, left: 0};
+				const innerWidth = width - margin.left - margin.right;
+				const innerHeight = height - margin.top - margin.bottom;
+
+				const svg = d3.select('#d3-container').append('svg')
+					.attr('width', width)
+					.attr('height', height);
+
+				svgGroup = svg.append('g')
+					.attr('transform', `translate(${margin.left},${margin.top})`);
+					
+				// Provide access to width/height globally for camera panning
+				svgGroup.datum({ width, height });
+
+				// Reset active node state upon new tree generation from 3D mode
+				activeNode = null;
+
+				treeLayout = d3.tree().size([innerWidth, innerHeight]);
+
+				root = d3.hierarchy(coupleData, d => d.children);
+				root.x0 = innerWidth / 2;
+				root.y0 = 0;
+
+				// Collapse all children initially except root
+				function collapse(d) {
+					if (d.children) {
+						d._children = d.children;
+						d._children.forEach(collapse);
+						d.children = null;
+					}
+				}
+				if (root.children) {
+					root.children.forEach(collapse);
+				}
+
+				updateD3Tree(root);
+			}
+
+			function updateD3Tree(source) {
+				const treeData = treeLayout(root);
+				
+				const nodes = treeData.descendants();
+				const links = treeData.descendants().slice(1);
+				
+				// Adjust depth spacing so it looks nice with tall cards
+				nodes.forEach(d => { d.y = d.depth * 250; }); 
+
+				// Pan SVG so active node is near the top
+				if (activeNode) {
+					const svgData = svgGroup.datum();
+					if (svgData) {
+						const targetX = svgData.width / 2;
+						const targetY = 150;
+						const newTranslateX = targetX - activeNode.x;
+						const newTranslateY = targetY - activeNode.y;
+						svgGroup.transition()
+							.duration(800)
+							.attr('transform', `translate(${newTranslateX},${newTranslateY})`);
+					}
+				}
+
+				// Helper to check ancestry
+				const isAncestor = (node, descendant) => {
+					if (!descendant) return false;
+					let current = descendant.parent;
+					while (current) {
+						if (current.id === node.id) return true;
+						current = current.parent;
+					}
+					return false;
+				};
+
+				// ********* Nodes *********
+				const nodeSelection = svgGroup.selectAll('g.node')
+					.data(nodes, d => d.id || (d.id = ++currentId));
+
+				const nodeEnter = nodeSelection.enter().append('g')
+					.attr('class', 'node')
+					.attr('transform', d => `translate(${source.x0},${source.y0}) scale(0.1)`)
+					.style('opacity', 0)
+					.on('click', clickNode);
+
+				// Use foreignObject to embed the exact HTML cards inside SVG!
+				const fo = nodeEnter.append('foreignObject')
+					.attr('width', 320)
+					.attr('height', 160)
+					// Center the foreignObject relative to node
+					.attr('x', -160)
+					.attr('y', -30)
+					.style('overflow', 'visible');
+
+				fo.append('xhtml:div')
+					.style('display', 'flex')
+					.style('justify-content', 'center')
+					.html(d => createCoupleHTML(d.data));
+
+				// UPDATE
+				const nodeUpdate = nodeEnter.merge(nodeSelection);
+				nodeUpdate.transition()
+					.duration(800)
+					.style('opacity', 1)
+					.attr('transform', d => {
+						let scale = 1.0;
+						if (activeNode) {
+							if (d.id === activeNode.id) scale = 1.15; // Enlarge active
+							else if (isAncestor(d, activeNode)) scale = 0.75; // Shrink ancestors
+						} else {
+							// If no active node, just root is slightly larger
+							if (d.depth === 0) scale = 1.15;
+						}
+						return `translate(${d.x},${d.y}) scale(${scale})`;
+					});
+
+				// EXIT
+				const nodeExit = nodeSelection.exit().transition()
+					.duration(800)
+					.attr('transform', d => `translate(${source.x},${source.y}) scale(0.1)`)
+					.style('opacity', 0)
+					.remove();
+
+				// ********* Links *********
+				const linkSelection = svgGroup.selectAll('path.link')
+					.data(links, d => d.id);
+
+				const linkEnter = linkSelection.enter().insert('path', 'g')
+					.attr('class', 'link')
+					.attr('d', d => {
+						const o = {x: source.x0, y: source.y0};
+						return diagonal(o, o);
+					});
+
+				const linkUpdate = linkEnter.merge(linkSelection);
+				linkUpdate.transition()
+					.duration(800)
+					.attr('d', d => diagonal(d, d.parent));
+
+				linkSelection.exit().transition()
+					.duration(800)
+					.attr('d', d => {
+						const o = {x: source.x, y: source.y};
+						return diagonal(o, o);
+					})
+					.remove();
+
+				nodes.forEach(d => {
+					d.x0 = d.x;
+					d.y0 = d.y;
+				});
+			}
+
+			// Curved path from parent to child
+			function diagonal(s, d) {
+				return `M ${s.x} ${s.y}
+						C ${s.x} ${(s.y + d.y) / 2},
+						  ${d.x} ${(s.y + d.y) / 2},
+						  ${d.x} ${d.y}`;
+			}
+
+			function clickNode(event, d) {
+				activeNode = d;
+				if (d.children) {
+					d._children = d.children;
+					d.children = null;
+				} else {
+					d.children = d._children;
+					d._children = null;
+				}
+				updateD3Tree(d);
+			}
+
+			function createCoupleHTML(data) {
+				let html = `<div class="couple-container" style="pointer-events: auto;">`;
+				
+				if (data.husband) {
+					html += `
+					<div class="profile-card husband-card">
+						<img src="${data.husband.avatar}" class="profile-avatar" />
+						<div class="profile-name">${data.husband.name}</div>
+						<div class="profile-details">Lahir: ${data.husband.birth}<br>Di: ${data.husband.location}</div>
+					</div>`;
+				}
+				if (data.wife) {
+					html += `
+					<div class="profile-card wife-card">
+						<img src="${data.wife.avatar}" class="profile-avatar" />
+						<div class="profile-name">${data.wife.name}</div>
+						<div class="profile-details">Lahir: ${data.wife.birth}<br>Di: ${data.wife.location}</div>
+					</div>`;
+				}
+				html += `</div>`;
+				return html;
+			}
+
+			// Up / Previous Generation logic
+			document.getElementById('d3-up-btn').addEventListener('click', () => {
+				if (activeNode && activeNode.parent) {
+					activeNode = activeNode.parent;
+					updateD3Tree(activeNode);
+				}
+			});
+
+			// Back button logic
+			document.getElementById('d3-back-btn').addEventListener('click', () => {
+				document.getElementById('d3-overlay').classList.remove('active');
+				document.getElementById('webgl-container').classList.remove('hidden');
+
+				if (lastLookDir && lastProfilePos) {
+					const backupDist = 12; // Farther out
+					const backPos = lastProfilePos.clone().add(lastLookDir.multiplyScalar(backupDist));
+					new TWEEN.Tween(camera.position)
+						.to({ x: backPos.x, y: backPos.y, z: backPos.z }, 1200)
+						.easing(TWEEN.Easing.Cubic.Out)
+						.start();
+				}
+			});
+
+			function createCoupleProfile3D(coupleData, position) {
+				const wrapper = document.createElement('div');
+				wrapper.innerHTML = createCoupleHTML(coupleData);
+				const contentDom = wrapper.firstElementChild; // .couple-container
+				
+				const profileObject = new CSS2DObject(contentDom);
+				profileObject.position.copy(position);
+				scene.add(profileObject);
+
+				contentDom.addEventListener('pointerdown', (event) => {
+					const targetPos = profileObject.position.clone();
+					lastProfilePos = targetPos;
+					const currentLookDirection = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+					lastLookDir = currentLookDirection.clone();
+
+					const distToKeep = 4; 
+					const newCameraPos = targetPos.clone().add(currentLookDirection.multiplyScalar(distToKeep));
+
+					new TWEEN.Tween(controls.target)
+						.to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 1200)
+						.easing(TWEEN.Easing.Cubic.InOut)
+						.start();
+
+					new TWEEN.Tween(camera.position)
+						.to({ x: newCameraPos.x, y: newCameraPos.y, z: newCameraPos.z }, 1200)
+						.easing(TWEEN.Easing.Cubic.InOut)
+						.onComplete(() => {
+							document.getElementById('webgl-container').classList.add('hidden');
+							document.getElementById('d3-overlay').classList.add('active');
+							renderD3Tree(coupleData);
+						})
+						.start();
+				});
+
+				return profileObject;
+			}
+
+			// --- Setup Family Dataset ---
+			const leoFamily = {
+				husband: { name: "Parhat", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leonardo", birth: "1990", location: "Jakarta" },
+				wife: { name: "Botak", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anna", birth: "1992", location: "Jakarta" },
+				children: [
+					{
+						husband: { name: "Arthur", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arthur", birth: "2015", location: "Bandung" },
+						wife: { name: "Martha", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Martha", birth: "2016", location: "Bandung" },
+						children: [
+							{
+								husband: { name: "John", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John", birth: "2040", location: "Bali" }
+							}
+						]
+					},
+					{
+						wife: { name: "Sarah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", birth: "2018", location: "Surabaya" }
+					}
+				]
+			};
+
+			const isaFamily = {
+				husband: { name: "Michael", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael", birth: "1988", location: "Medan" },
+				wife: { name: "Isabella", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Isabella", birth: "1991", location: "Medan" },
+				children: [
+					{
+						husband: { name: "Robert", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Robert", birth: "2020", location: "Batam" },
+						wife: { name: "Maria", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria", birth: "2022", location: "Batam" }
+					}
+				]
+			};
+
+			createCoupleProfile3D(leoFamily, new THREE.Vector3(-3.2, 5.5, 0.8));
+			createCoupleProfile3D(isaFamily, new THREE.Vector3(3.0, 5.8, -0.5));
 
 			// --- 🌳 7. LOAD THE 3D MODEL (GLB) ---
 			// =================================================================
@@ -549,6 +1004,8 @@
 			// =================================================================
             const clock = new THREE.Clock();
             function animate() {
+                TWEEN.update(); // NEW: update TWEEN animations for camera zooming
+
                 const elapsedTime = clock.getElapsedTime(); // Get the total time passed since start.
 
                 // Update the time uniform for the grass wind effect.
@@ -569,6 +1026,7 @@
                 requestAnimationFrame(animate); // Loop the animation.
                 controls.update(); // Update camera controls.
                 renderer.render(scene, camera); // Render the scene.
+                labelRenderer.render(scene, camera); // NEW: renders HTML CSS2D objects over the scene
             }
             animate();
 
@@ -577,6 +1035,7 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 				renderer.setSize(window.innerWidth, window.innerHeight);
+				labelRenderer.setSize(window.innerWidth, window.innerHeight); // NEW: resize label canvas
 			});
 
 		</script>
