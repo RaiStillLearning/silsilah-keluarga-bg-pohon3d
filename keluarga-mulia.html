@@ -1003,270 +1003,77 @@
 			}
 
 			// --- Setup Family Dataset ---
-			const sharedGenerations = [
-				{
-					wife: { name: "Hj. Mulia binti H. Ramli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mulia", birth: "-", location: "-" },
-					husband: { name: "H. Abdurrahman bin M. Nazi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdurrahman", birth: "-", location: "-" },
-					children: [
-						{
-							husband: { name: "Iskandar", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Iskandar", birth: "-", location: "-" },
-							wife: { name: "Hikmah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hikmah", birth: "-", location: "-" },
-							children: [
-								{
-									wife: { name: "Tuti Nuraini", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tuti", birth: "-", location: "-" },
-									husband: { name: "Irfan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Irfan", birth: "-", location: "-" },
-									children: [
-										{ husband: { name: "Abin", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abin", birth: "-", location: "-" } }
-									]
-								},
-								{
-									husband: { name: "Hari", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hari2", birth: "-", location: "-" }
-								}
-							]
-						},
-						{
-							husband: { name: "Ruswanto", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ruswanto", birth: "-", location: "-" },
-							wife: { name: "Farida", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Farida", birth: "-", location: "-" },
-							children: [
-								{
-									wife: { name: "Mega Rianti", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mega", birth: "-", location: "-" },
-									husband: { name: "Mulki", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mulki", birth: "-", location: "-" },
-									children: [
-										{ husband: { name: "Zafran", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zafran", birth: "-", location: "-" } }
-									]
-								},
-								{
-									husband: { name: "Sandy", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sandy", birth: "-", location: "-" },
-									wife: { name: "Nanda", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nanda", birth: "-", location: "-" }
-								},
-								{
-									wife: { name: "Nabila", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nabila", birth: "-", location: "-" }
-								},
-								{
-									husband: { name: "Aldi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aldi", birth: "-", location: "-" }
-								}
-							]
-						},
-						{
-							husband: { name: "Hari", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hari", birth: "-", location: "-" },
-							wife: { name: "Maryani", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maryani", birth: "-", location: "-" },
-							children: [
-								{ husband: { name: "Fikri", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fikri", birth: "-", location: "-" } },
-								{ husband: { name: "Arya", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arya", birth: "-", location: "-" } }
-							]
-						},
-						{
-							husband: { name: "Mulyadi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mulyadi", birth: "-", location: "-" }
-						},
-						{
-							husband: { name: "Rusli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rusli", birth: "-", location: "-" },
-							wife: { name: "Ade", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ade", birth: "-", location: "-" },
-							children: [
-								{ wife: { name: "Fira", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fira", birth: "-", location: "-" } },
-								{ husband: { name: "Syadat", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Syadat", birth: "-", location: "-" } }
-							]
-						},
-						{
-							wife: { name: "Erni", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Erni", birth: "-", location: "-" }
-						}
-					]
-				},
-				{
-					husband: { name: "Siti Zubaidah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Cahyo", birth: "2043", location: "Bandung" },
-					wife: { name: "Yusuf Lubis", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dewi", birth: "2044", location: "Bandung" },
-					children: [
-						{
-							husband: { name: "Yusman Helmi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z1L", birth: "2065", location: "Bandung" },
-							wife: { name: "Nani", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z1P", birth: "2067", location: "Bandung" },
-							children: [
-								{
-									husband: { name: "Ade Irma Soraya", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z2L", birth: "2090", location: "Bandung" },
-									wife: { name: "Agus Pribadi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z2P", birth: "2092", location: "Bandung" },
-									children: [
-										{
-											husband: { name: "Ida Novianti", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z3L", birth: "2115", location: "Bandung" },
-											wife: { name: "Ilham", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z3P", birth: "2117", location: "Bandung" },
-											children: [
-												{
-													husband: { name: "Maryana Agustina", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z4L", birth: "2140", location: "Bandung" },
-													// wife: { name: "Pasangan Ke-4", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z4P", birth: "2142", location: "Bandung" },
-													children: [
-														{
-															husband: { name: "Novitri Hasanah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z5L", birth: "2165", location: "Bandung" },
-															// wife: { name: "Pasangan Ke-5", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z5P", birth: "2167", location: "Bandung" },
-															children: [
-																{
-																	husband: { name: "Achmad Dimyati", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z6L", birth: "2190", location: "Bandung" },
-																	// wife: { name: "Pasangan Ke-6", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Z6P", birth: "2192", location: "Bandung" }
-																}
-															]
-														}
-													]
-												}
-											]
-										}
-									]
-								}
-							]
-						}
-					]
-				},
-				{
-					husband: { name: "Ahmad Ramli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Eko", birth: "2045", location: "Malang" },
-					wife: { name: "Husnah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fitri", birth: "2046", location: "Malang" },
-					children: [
-						{
-							husband: { name: "Muhsin", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R1L", birth: "2065", location: "Malang" },
-							wife: { name: "Ika", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R1P", birth: "2067", location: "Malang" },
-							children: [
-								{
-									husband: { name: "Nurlaila", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R2L", birth: "2090", location: "Malang" },
-									wife: { name: "Widiyono", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R2P", birth: "2092", location: "Malang" },
-									children: [
-										{
-											husband: { name: "Rosada", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R3L", birth: "2115", location: "Malang" },
-											wife: { name: "Yusuf", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R3P", birth: "2117", location: "Malang" },
-											children: [
-												{
-													husband: { name: "Maryama", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R4L", birth: "2140", location: "Malang" },
-													wife: { name: "Usep", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R4P", birth: "2142", location: "Malang" },
-													children: [
-														{
-															husband: { name: "Nur Asiah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R5L", birth: "2165", location: "Malang" },
-															wife: { name: "Agung", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R5P", birth: "2167", location: "Malang" },
-															// children: [
-																// {
-																	// husband: { name: "Keturunan Ke-6 Ahmad Ramli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R6L", birth: "2190", location: "Malang" },
-																	// wife: { name: "Pasangan Ke-6", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=R6P", birth: "2192", location: "Malang" }
-																// }
-															// ]
-														}
-													]
-												}
-											]
-										}
-									]
-								}
-							]
-						}
-					]
-				},
-				{
-					husband: { name: "Siti Atiyah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Galih", birth: "2047", location: "Jakarta" },
-					wife: { name: "Jimmy Wachman", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hani", birth: "2048", location: "Jakarta" },
-					children: [
-						{
-							husband: { name: "Maryani", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A1L", birth: "2065", location: "Jakarta" },
-							wife: { name: "Achmad Fauzi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A1P", birth: "2067", location: "Jakarta" },
-							children: [
-								{
-									husband: { name: "Alfian", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A2L", birth: "2090", location: "Jakarta" },
-									// wife: { name: "Pasangan Ke-2", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A2P", birth: "2092", location: "Jakarta" },
-									children: [
-										{
-											husband: { name: "Siti Napisah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A3L", birth: "2115", location: "Jakarta" },
-											wife: { name: "Sofyan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A3P", birth: "2117", location: "Jakarta" },
-											children: [
-												{
-													husband: { name: "Susanti", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A4L", birth: "2140", location: "Jakarta" },
-													wife: { name: "Maryo", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A4P", birth: "2142", location: "Jakarta" },
-													children: [
-														{
-															husband: { name: "Amri", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A5L", birth: "2165", location: "Jakarta" },
-															wife: { name: "Nuronia", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A5P", birth: "2167", location: "Jakarta" },
-															children: [
-																{
-																	husband: { name: "Taufik", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A6L", birth: "2190", location: "Jakarta" },
-																	wife: { name: "", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A6P", birth: "2192", location: "Jakarta" }
-																}
-															]
-														}
-													]
-												}
-											]
-										}
-									]
-								}
-							]
-						}
-					]
-				},
-				{
-					husband: { name: "Asli Rusli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Galih", birth: "2047", location: "Jakarta" },
-					wife: { name: "Dewi Maryam", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hani", birth: "2048", location: "Jakarta" },
-					children: [
-						{
-							husband: { name: "Muhammad Aby Rahman", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A1L", birth: "2065", location: "Jakarta" },
-							wife: { name: "Yessi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A1P", birth: "2067", location: "Jakarta" },
-							children: [
-								{
-									husband: { name: "Muhammad Lutfi Maulidi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A2L", birth: "2090", location: "Jakarta" },
-									wife: { name: "Fina", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A2P", birth: "2092", location: "Jakarta" },
-									children: [
-										{
-											husband: { name: "Muhammad Lukamn Rafi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A3L", birth: "2115", location: "Jakarta" },
-											wife: { name: "Ratna", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A3P", birth: "2117", location: "Jakarta" },
-											// children: [
-											// 	{
-											// 		husband: { name: "Susanti", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A4L", birth: "2140", location: "Jakarta" },
-											// 		wife: { name: "Maryo", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A4P", birth: "2142", location: "Jakarta" },
-											// 		children: [
-											// 			{
-											// 				husband: { name: "Amri", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A5L", birth: "2165", location: "Jakarta" },
-											// 				wife: { name: "Nuronia", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A5P", birth: "2167", location: "Jakarta" },
-											// 				children: [
-											// 					{
-											// 						husband: { name: "Taufik", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A6L", birth: "2190", location: "Jakarta" },
-											// 						wife: { name: "", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=A6P", birth: "2192", location: "Jakarta" }
-											// 					}
-											// 				]
-											// 			}
-											// 		]
-											// 	}
-											// ]
-										}
-									]
-								}
-							]
-						}
-					]
-				},
-			];
-
-			const leoFamily = {
-				husband: { name: "Junaedi", avatar:"https://randomuser.me/api/portraits/men/75.jpg", birth: "1990", location: "Jakarta" },
-				wife: { name: "Naseha", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anna", birth: "1992", location: "Jakarta" },
+			const muliaFamily = {
+				wife: { name: "Hj. Mulia binti H. Ramli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mulia", birth: "-", location: "-" },
+				husband: { name: "H. Abdurrahman bin M. Nazi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdurrahman", birth: "-", location: "-" },
 				children: [
 					{
-						husband: { name: "Rodiah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arthur", birth: "2015", location: "Bandung" },
-						children: sharedGenerations
+						husband: { name: "Iskandar", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Iskandar", birth: "-", location: "-" },
+						wife: { name: "Hikmah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hikmah", birth: "-", location: "-" },
+						children: [
+							{
+								wife: { name: "Tuti Nuraini", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tuti", birth: "-", location: "-" },
+								husband: { name: "Irfan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Irfan", birth: "-", location: "-" },
+								children: [
+									{ husband: { name: "Abin", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abin", birth: "-", location: "-" } }
+								]
+							},
+							{
+								husband: { name: "Hari", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hari2", birth: "-", location: "-" }
+							}
+						]
+					},
+					{
+						husband: { name: "Ruswanto", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ruswanto", birth: "-", location: "-" },
+						wife: { name: "Farida", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Farida", birth: "-", location: "-" },
+						children: [
+							{
+								wife: { name: "Mega Rianti", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mega", birth: "-", location: "-" },
+								husband: { name: "Mulki", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mulki", birth: "-", location: "-" },
+								children: [
+									{ husband: { name: "Zafran", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zafran", birth: "-", location: "-" } }
+								]
+							},
+							{
+								husband: { name: "Sandy", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sandy", birth: "-", location: "-" },
+								wife: { name: "Nanda", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nanda", birth: "-", location: "-" }
+							},
+							{
+								wife: { name: "Nabila", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nabila", birth: "-", location: "-" }
+							},
+							{
+								husband: { name: "Aldi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aldi", birth: "-", location: "-" }
+							}
+						]
+					},
+					{
+						husband: { name: "Hari", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Hari", birth: "-", location: "-" },
+						wife: { name: "Maryani", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maryani", birth: "-", location: "-" },
+						children: [
+							{ husband: { name: "Fikri", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fikri", birth: "-", location: "-" } },
+							{ husband: { name: "Arya", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arya", birth: "-", location: "-" } }
+						]
+					},
+					{
+						husband: { name: "Mulyadi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mulyadi", birth: "-", location: "-" }
+					},
+					{
+						husband: { name: "Rusli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rusli", birth: "-", location: "-" },
+						wife: { name: "Ade", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ade", birth: "-", location: "-" },
+						children: [
+							{ wife: { name: "Fira", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fira", birth: "-", location: "-" } },
+							{ husband: { name: "Syadat", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Syadat", birth: "-", location: "-" } }
+						]
+					},
+					{
+						wife: { name: "Erni", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Erni", birth: "-", location: "-" }
 					}
 				]
 			};
 
-			const isaFamily = {
-				husband: { name: "Mulud", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael", birth: "1988", location: "Medan" },
-				wife: { name: "Fulan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Isabella", birth: "1991", location: "Medan" },
-				children: [
-					{
-						wife: { name: "Ramli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", birth: "2020", location: "Batam" },
-						children: sharedGenerations
-					}
-				]
-			};
-
-			// Rentangkan posisi di Tree 3D agar card-card tidak saling menumpuk satu sama lain
-			const leoPos1 = new THREE.Vector3(-2.8, 8.5, 1.5);
-			const leoPos2 = new THREE.Vector3(-2.8, 4.5, 1.5);
-			createCoupleProfile3D({ husband: leoFamily.husband, wife: leoFamily.wife }, leoPos1, leoFamily);
-			createCoupleProfile3D(leoFamily.children[0], leoPos2, leoFamily);
-			createConnectionLine(leoPos1, leoPos2);
-
-			const isaPos1 = new THREE.Vector3(2.5, 8.8, 0.0);
-			const isaPos2 = new THREE.Vector3(2.5, 4.8, 0.0);
-			createCoupleProfile3D({ husband: isaFamily.husband, wife: isaFamily.wife }, isaPos1, isaFamily);
-			createCoupleProfile3D(isaFamily.children[0], isaPos2, isaFamily);
-			createConnectionLine(isaPos1, isaPos2);
+			// Rentangkan posisi di Tree 3D
+			const rootPos = new THREE.Vector3(0, 6.5, 1.5);
+			createCoupleProfile3D({ husband: muliaFamily.husband, wife: muliaFamily.wife }, rootPos, muliaFamily);
 
 			// --- 🌳 7. LOAD THE 3D MODEL (GLB) ---
 			// =================================================================
