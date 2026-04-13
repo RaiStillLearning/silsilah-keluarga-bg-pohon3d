@@ -167,8 +167,7 @@
 		<div id="webgl-container"></div>
 		<div id="d3-overlay">
 			<div class="d3-controls">
-				<button class="d3-btn" id="d3-back-btn">← Back to 3D Tree</button>
-				<button class="d3-btn" id="d3-up-btn">↑ Previous Generation</button>
+				<button class="d3-btn" id="d3-home-btn" style="background: #e3f2fd; border-color: #90caf9; color: #1565c0;">🏠 Kembali ke Silsilah Utama</button>
 			</div>
 			<div id="d3-container"></div>
 		</div>
@@ -869,6 +868,10 @@
 					d.x0 = d.x;
 					d.y0 = d.y;
 				});
+
+				if (typeof updateD3Buttons === 'function') {
+					updateD3Buttons();
+				}
 			}
 
 			// Curved path from parent to child
@@ -914,41 +917,134 @@
 				return html;
 			}
 
-			// Up / Previous Generation logic
-			document.getElementById('d3-up-btn').addEventListener('click', () => {
-				if (activeNode && activeNode.parent) {
-					activeNode = activeNode.parent;
-					// expand the parent if it was collapsed
-					if (activeNode._children) {
-						activeNode.children = activeNode._children;
-						activeNode._children = null;
+			// D3 Buttons helper function
+			function updateD3Buttons() {
+				const setDisabled = (id, disabled) => {
+					const btn = document.getElementById(id);
+					if (btn) {
+						btn.disabled = disabled;
+						btn.style.opacity = disabled ? '0.5' : '1';
+						btn.style.cursor = disabled ? 'default' : 'pointer';
 					}
-					updateD3Tree(activeNode);
+				};
+
+				if (!activeNode) return;
+
+				setDisabled('d3-up-btn', !activeNode.parent);
+				
+				const hasChildren = (activeNode.children && activeNode.children.length > 0) || (activeNode._children && activeNode._children.length > 0);
+				setDisabled('d3-down-btn', !hasChildren);
+
+				if (activeNode.parent) {
+					let siblings = activeNode.parent.children || activeNode.parent._children;
+					let idx = siblings ? siblings.findIndex(n => n.id === activeNode.id) : -1;
+					setDisabled('d3-prev-btn', idx <= 0);
+					setDisabled('d3-next-btn', idx === -1 || idx >= siblings.length - 1);
+				} else {
+					setDisabled('d3-prev-btn', true);
+					setDisabled('d3-next-btn', true);
 				}
-			});
+			}
+
+			// Home logic
+			const homeBtn = document.getElementById('d3-home-btn');
+			if(homeBtn) {
+				homeBtn.addEventListener('click', () => {
+					window.location.href = 'index.html';
+				});
+			}
+
+			// Up / Previous Generation logic
+			const upBtn = document.getElementById('d3-up-btn');
+			if(upBtn) {
+				upBtn.addEventListener('click', () => {
+					if (activeNode && activeNode.parent) {
+						activeNode = activeNode.parent;
+						if (activeNode._children) {
+							activeNode.children = activeNode._children;
+							activeNode._children = null;
+						}
+						updateD3Tree(activeNode);
+					}
+				});
+			}
+
+			// Down / Next Generation logic
+			const downBtn = document.getElementById('d3-down-btn');
+			if(downBtn) {
+				downBtn.addEventListener('click', () => {
+					if (activeNode) {
+						if (activeNode._children) {
+							activeNode.children = activeNode._children;
+							activeNode._children = null;
+						}
+						if (activeNode.children && activeNode.children.length > 0) {
+							activeNode = activeNode.children[0];
+							updateD3Tree(activeNode);
+						}
+					}
+				});
+			}
+
+			// Previous Sibling
+			const prevBtn = document.getElementById('d3-prev-btn');
+			if(prevBtn) {
+				prevBtn.addEventListener('click', () => {
+					if (activeNode && activeNode.parent) {
+						let siblings = activeNode.parent.children || activeNode.parent._children;
+						if (siblings) {
+							let idx = siblings.findIndex(n => n.id === activeNode.id);
+							if (idx > 0) {
+								activeNode = siblings[idx - 1];
+								updateD3Tree(activeNode);
+							}
+						}
+					}
+				});
+			}
+
+			// Next Sibling
+			const nextBtn = document.getElementById('d3-next-btn');
+			if(nextBtn) {
+				nextBtn.addEventListener('click', () => {
+					if (activeNode && activeNode.parent) {
+						let siblings = activeNode.parent.children || activeNode.parent._children;
+						if (siblings) {
+							let idx = siblings.findIndex(n => n.id === activeNode.id);
+							if (idx !== -1 && idx < siblings.length - 1) {
+								activeNode = siblings[idx + 1];
+								updateD3Tree(activeNode);
+							}
+						}
+					}
+				});
+			}
 
 			// Back button logic
-			document.getElementById('d3-back-btn').addEventListener('click', () => {
-				document.getElementById('d3-overlay').classList.remove('active');
-				document.getElementById('webgl-container').classList.remove('hidden');
+			const backBtn = document.getElementById('d3-back-btn');
+			if(backBtn) {
+				backBtn.addEventListener('click', () => {
+					document.getElementById('d3-overlay').classList.remove('active');
+					document.getElementById('webgl-container').classList.remove('hidden');
 
-				// Clear D3 layout after transition to prevent overlapping elements later
-				setTimeout(() => {
-					if (!document.getElementById('d3-overlay').classList.contains('active')) {
-						document.getElementById('d3-container').innerHTML = '';
-						svgSelection = null;
+					// Clear D3 layout after transition to prevent overlapping elements later
+					setTimeout(() => {
+						if (!document.getElementById('d3-overlay').classList.contains('active')) {
+							document.getElementById('d3-container').innerHTML = '';
+							svgSelection = null;
+						}
+					}, 400);
+
+					if (lastLookDir && lastProfilePos) {
+						const backupDist = 12; // Farther out
+						const backPos = lastProfilePos.clone().add(lastLookDir.multiplyScalar(backupDist));
+						new TWEEN.Tween(camera.position)
+							.to({ x: backPos.x, y: backPos.y, z: backPos.z }, 1200)
+							.easing(TWEEN.Easing.Cubic.Out)
+							.start();
 					}
-				}, 400);
-
-				if (lastLookDir && lastProfilePos) {
-					const backupDist = 12; // Farther out
-					const backPos = lastProfilePos.clone().add(lastLookDir.multiplyScalar(backupDist));
-					new TWEEN.Tween(camera.position)
-						.to({ x: backPos.x, y: backPos.y, z: backPos.z }, 1200)
-						.easing(TWEEN.Easing.Cubic.Out)
-						.start();
-				}
-			});
+				});
+			}
 
 			// Helper to draw a line between two 3D positions to show connection
 			function createConnectionLine(pos1, pos2) {
@@ -1061,8 +1157,13 @@
 						husband: { name: "Rusli", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rusli", birth: "-", location: "-" },
 						wife: { name: "Ade", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ade", birth: "-", location: "-" },
 						children: [
-							{ wife: { name: "Fira", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fira", birth: "-", location: "-" } },
-							{ husband: { name: "Syadat", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Syadat", birth: "-", location: "-" } }
+							{ 
+								wife: { name: "Fira", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fira", birth: "-", location: "-" },
+								husband: { name: "Suami Fira", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=SuamiFira", birth: "-", location: "-" },
+								children: [
+									{ husband: { name: "Syadat", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Syadat", birth: "-", location: "-" } }
+								]
+							}
 						]
 					},
 					{
