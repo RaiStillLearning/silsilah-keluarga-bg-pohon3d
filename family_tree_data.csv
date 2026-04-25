@@ -1,0 +1,51 @@
+Generasi,Nama,Jenis Kelamin,Ayah,Ibu,Pasangan,,id,nama,gender,generasi,ayah_id,ibu_id,pasangan_id
+1,Yusuf Lubis,Pria,,,Siti Zubaidah Almh. (9-Apr-1993),,1,Yusuf Lubis,L,1,NULL,NULL,2
+2,Yusman Helmi,Pria,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),Tri Winarni,,2,Siti Zubaidah Almh. (9-Apr-1993),P,1,NULL,NULL,1
+2,Ade Irma Soraya Almh. (27-Feb-2022),Wanita,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),Agus Pribadi Alm. (27-Mar-2026),,3,Yusman Helmi,L,2,1,2,4
+2,Ida Novianti,Wanita,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),Ilham Syafari,,4,Tri Winarni,P,2,NULL,NULL,3
+2,Mariana Agustina,Wanita,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),,,5,Ade Irma Soraya Almh. (27-Feb-2022),P,2,1,2,6
+2,Novitry Hasanah,Wanita,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),Inzra Benyamin,,6,Agus Pribadi Alm. (27-Mar-2026),L,2,NULL,NULL,5
+2,Achmad Dimyati,Pria,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),Dian Rahayu Jatiningrum,,7,Ida Novianti,P,2,1,2,8
+2,Nur Asiah,Wanita,Yusuf Lubis,Siti Zubaidah Almh. (9-Apr-1993),Agung Rochmanianto,,8,Ilham Syafari,L,2,NULL,NULL,7
+3,Deamira Fathia Soraya,Wanita,Agus Pribadi Alm. (27-Mar-2026),Ade Irma Soraya Almh. (27-Feb-2022),Andi Wahyudi Rasyid,,9,Mariana Agustina,P,2,1,2,NULL
+3,Faiz Irfan Muhammad,Pria,Agus Pribadi Alm. (27-Mar-2026),Ade Irma Soraya Almh. (27-Feb-2022),,,10,Novitry Hasanah,P,2,1,2,11
+3,Nur Azizah,Wanita,Yusman Helmi,Tri Winarni,Muh. Yahya,,11,Inzra Benyamin,L,2,NULL,NULL,10
+3,Rizky Damayanti,Wanita,Yusman Helmi,Tri Winarni,Agi Sambera,,12,Achmad Dimyati,L,2,1,2,13
+3,Muhammad Fadriyansyah Helmi,Pria,Yusman Helmi,Tri Winarni,Bunga Setiawati,,13,Dian Rahayu Jatiningrum,P,2,NULL,NULL,12
+3,Nabila Aufa Helmi ,Wanita,Yusman Helmi,Tri Winarni,,,14,Nur Asiah,P,2,1,2,15
+3,Naila Muazara Ulfa helmi,Wanita,Yusman Helmi,Tri Winarni,,,15,Agung Rochmanianto,L,2,NULL,NULL,14
+3,Nada Mufida,Wanita,Ilham Syafari,Ida Novianti,Angga Kusuma Kusmayadi,,16,Deamira Fathia Soraya,P,3,6,5,17
+3,Muhammad Bisri Jamil,Pria,Ilham Syafari,Ida Novianti,Gita Amalya,,17,Andi Wahyudi Rasyid,L,3,NULL,NULL,16
+3,Naurah Nazifah,Wanita,Ilham Syafari,Ida Novianti,,,18,Faiz Irfan Muhammad,L,3,6,5,NULL
+3,Farah Syakira Chairani,Wanita,Inzra Benyamin,Novitry Hasanah,,,19,Nur Azizah,P,3,3,4,20
+3,Muhammad Azri,Pria,Inzra Benyamin,Novitry Hasanah,,,20,Muh. Yahya,L,3,NULL,NULL,19
+3,Muzaki Ahmad Ridho Azizy,Pria,Agung Rochmanianto,Nur Asiah,,,21,Rizky Damayanti,P,3,3,4,22
+3,Muhammad Mirza Karim,Pria,Agung Rochmanianto,Nur Asiah,,,22,Agi Sambera,L,3,NULL,NULL,21
+3,Danissa Ranaia Ahmad,Wanita,Achmad Dimyati,Dian Rahayu Jatiningrum,,,23,Muhammad Fadriyansyah Helmi,L,3,3,4,24
+3,Daffal Ranaqee  Ahmad,Pria,Achmad Dimyati,Dian Rahayu Jatiningrum,,,24,Bunga Setiawati,P,3,NULL,NULL,23
+3,Neira Zahra Ahmad,Wanita,Achmad Dimyati,Dian Rahayu Jatiningrum,,,25,Nabila Aufa Helmi ,P,3,3,4,NULL
+3,Nooh Mikaeel Ahmad,Pria,Achmad Dimyati,Dian Rahayu Jatiningrum,,,26,Naila Muazara Ulfa Helmi,P,3,3,4,NULL
+4,Annisa Aulia Helmi,Wanita,Muhammad Fadriyansyah Helmi,Bunga Setiawati,,,27,Nada Mufida,P,3,8,7,28
+4,Ameera Aulia Helmi,Wanita,Muhammad Fadriyansyah Helmi,Bunga Setiawati,,,28,Angga Kusuma Kusmayadi,L,3,NULL,NULL,27
+4,Alfatih Muhammad Kusuma,Pria,Nada Mufida,Angga Kusuma Kusmayadi,,,29,Muhammad Bisri Jamil,L,3,8,7,30
+4,Pramidita Aghani Rasyid,Wanita,Deamira Fathia Soraya,Andi Wahyudi Rasyid,,,30,Gita Amalya,P,3,NULL,NULL,29
+4,Kenzo Caesar,Pria,Rizky Damayanti,Agi Sambera,,,31,Naurah Nazifah,P,3,8,7,NULL
+4,Kenzi Putra,Pria,Rizky Damayanti,Agi Sambera,,,32,Farah Syakira Chairani,P,3,11,10,NULL
+4,Keano Saputra,Pria,Rizky Damayanti,Agi Sambera,,,33,Muhammad Azri,L,3,11,10,NULL
+4,Chelsea Alesha Sambera,Wanita,Rizky Damayanti,Agi Sambera,,,34,Muzaki Ahmad Ridho Azizy,L,3,15,14,NULL
+4,Linggar,Pria,Nur Azizah,Muh. Yahya,,,35,Muhammad Mirza Karim,L,3,15,14,NULL
+4,Nizar,Pria,Nur Azizah,Muh. Yahya,,,36,Danissa Ranaia Ahmad,P,3,12,13,NULL
+4,Abdul,Pria,Nur Azizah,Muh. Yahya,,,37,Daffal Ranaqee Ahmad,L,3,12,13,NULL
+,,,,,,,38,Neira Zahra Ahmad,P,3,12,13,NULL
+,,,,,,,39,Nooh Mikaeel Ahmad,L,3,12,13,NULL
+,,,,,,,40,Annisa Aulia Helmi,P,3,23,24,NULL
+,,,,,,,41,Ameera Aulia Helmi,P,3,23,24,NULL
+,,,,,,,42,Alfatih Muhammad Kusuma,L,4,27,28,NULL
+,,,,,,,43,Pramidita Aghani Rasyid,P,4,16,17,NULL
+,,,,,,,44,Kenzo Caesar,L,4,22,21,NULL
+,,,,,,,45,Kenzi Putra,L,4,22,21,NULL
+,,,,,,,46,Keano Saputra,L,4,22,21,NULL
+,,,,,,,47,Chelsea Alesha Sambera,P,4,22,21,NULL
+,,,,,,,48,Linggar,L,4,19,20,NULL
+,,,,,,,49,Nizar,L,4,19,20,NULL
+,,,,,,,50,Abdul,L,4,19,20,NULL
