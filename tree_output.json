@@ -1,0 +1,398 @@
+{
+    "husband": {
+        "name": "Yusuf Lubis",
+        "avatar": "assets/male.svg",
+        "birth": "-",
+        "location": "-"
+    },
+    "wife": {
+        "name": "Siti Zubaidah Almh. (9-Apr-1993)",
+        "avatar": "assets/female.svg",
+        "birth": "-",
+        "location": "-"
+    },
+    "children": [
+        {
+            "husband": {
+                "name": "Yusman Helmi",
+                "avatar": "assets/male.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "wife": {
+                "name": "Tri Winarni",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "children": [
+                {
+                    "husband": {
+                        "name": "Muh. Yahya",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "wife": {
+                        "name": "Nur Azizah",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "children": [
+                        {
+                            "husband": {
+                                "name": "Linggar",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        },
+                        {
+                            "husband": {
+                                "name": "Nizar",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        },
+                        {
+                            "husband": {
+                                "name": "Abdul",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "husband": {
+                        "name": "Agi Sambera",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "wife": {
+                        "name": "Rizky Damayanti",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "children": [
+                        {
+                            "husband": {
+                                "name": "Kenzo Caesar",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        },
+                        {
+                            "husband": {
+                                "name": "Kenzi Putra",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        },
+                        {
+                            "husband": {
+                                "name": "Keano Saputra",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        },
+                        {
+                            "wife": {
+                                "name": "Chelsea Alesha Sambera",
+                                "avatar": "assets/female.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "husband": {
+                        "name": "Muhammad Fadriyansyah Helmi",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "wife": {
+                        "name": "Bunga Setiawati",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "children": [
+                        {
+                            "wife": {
+                                "name": "Annisa Aulia Helmi",
+                                "avatar": "assets/female.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        },
+                        {
+                            "wife": {
+                                "name": "Ameera Aulia Helmi",
+                                "avatar": "assets/female.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "wife": {
+                        "name": "Nabila Aufa Helmi ",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "wife": {
+                        "name": "Naila Muazara Ulfa Helmi",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                }
+            ]
+        },
+        {
+            "husband": {
+                "name": "Agus Pribadi Alm. (27-Mar-2026)",
+                "avatar": "assets/male.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "wife": {
+                "name": "Ade Irma Soraya Almh. (27-Feb-2022)",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "children": [
+                {
+                    "husband": {
+                        "name": "Andi Wahyudi Rasyid",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "wife": {
+                        "name": "Deamira Fathia Soraya",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "children": [
+                        {
+                            "wife": {
+                                "name": "Pramidita Aghani Rasyid",
+                                "avatar": "assets/female.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "husband": {
+                        "name": "Faiz Irfan Muhammad",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                }
+            ]
+        },
+        {
+            "husband": {
+                "name": "Ilham Syafari",
+                "avatar": "assets/male.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "wife": {
+                "name": "Ida Novianti",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "children": [
+                {
+                    "husband": {
+                        "name": "Angga Kusuma Kusmayadi",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "wife": {
+                        "name": "Nada Mufida",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "children": [
+                        {
+                            "husband": {
+                                "name": "Alfatih Muhammad Kusuma",
+                                "avatar": "assets/male.svg",
+                                "birth": "-",
+                                "location": "-"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "husband": {
+                        "name": "Muhammad Bisri Jamil",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    },
+                    "wife": {
+                        "name": "Gita Amalya",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "wife": {
+                        "name": "Naurah Nazifah",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                }
+            ]
+        },
+        {
+            "wife": {
+                "name": "Mariana Agustina",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            }
+        },
+        {
+            "husband": {
+                "name": "Inzra Benyamin",
+                "avatar": "assets/male.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "wife": {
+                "name": "Novitry Hasanah",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "children": [
+                {
+                    "wife": {
+                        "name": "Farah Syakira Chairani",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "husband": {
+                        "name": "Muhammad Azri",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                }
+            ]
+        },
+        {
+            "husband": {
+                "name": "Achmad Dimyati",
+                "avatar": "assets/male.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "wife": {
+                "name": "Dian Rahayu Jatiningrum",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "children": [
+                {
+                    "wife": {
+                        "name": "Danissa Ranaia Ahmad",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "husband": {
+                        "name": "Daffal Ranaqee Ahmad",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "wife": {
+                        "name": "Neira Zahra Ahmad",
+                        "avatar": "assets/female.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "husband": {
+                        "name": "Nooh Mikaeel Ahmad",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                }
+            ]
+        },
+        {
+            "husband": {
+                "name": "Agung Rochmanianto",
+                "avatar": "assets/male.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "wife": {
+                "name": "Nur Asiah",
+                "avatar": "assets/female.svg",
+                "birth": "-",
+                "location": "-"
+            },
+            "children": [
+                {
+                    "husband": {
+                        "name": "Muzaki Ahmad Ridho Azizy",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                },
+                {
+                    "husband": {
+                        "name": "Muhammad Mirza Karim",
+                        "avatar": "assets/male.svg",
+                        "birth": "-",
+                        "location": "-"
+                    }
+                }
+            ]
+        }
+    ]
+}
