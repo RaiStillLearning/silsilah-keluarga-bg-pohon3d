@@ -17,20 +17,26 @@
     }
 
     function checkAuth() {
-        if (window.location.pathname.endsWith("login.html")) return;
+        // Jika sudah di halaman login, jangan redirect lagi
+        if (window.location.pathname.includes("login.html")) return;
+
         const isAuth = localStorage.getItem(AUTH_KEY) === "true";
+        
         if (!isAuth) {
-            // Hide everything immediately to prevent content flash
-            document.documentElement.style.display = 'none';
+            // Simpan URL asal untuk kembali setelah login
             localStorage.setItem("redirect_after_login", window.location.href);
-            window.location.href = "login.html";
+            // Paksa pindah ke login.html segera
+            window.location.replace("login.html");
+            
+            // Tambahan: Sembunyikan body jika redirect tertunda
+            document.write('<style>body { display:none !important; }</style>');
         }
     }
 
-    // Run check immediately
+    // Jalankan pengecekan segera setelah file dimuat
     checkAuth();
 
-    // Export verify function for the login page
+    // Export fungsi verifikasi ke window agar bisa dipakai di login.html
     window.verifyFamilyLogin = async function(username, password, skipRedirect = false) {
         if (username !== VALID_USERNAME) return false;
         
@@ -40,7 +46,7 @@
             if (!skipRedirect) {
                 const redirect = localStorage.getItem("redirect_after_login") || "index.html";
                 localStorage.removeItem("redirect_after_login");
-                window.location.href = redirect;
+                window.location.replace(redirect);
             }
             return true;
         }
@@ -49,6 +55,6 @@
 
     window.logoutFamily = function() {
         localStorage.removeItem(AUTH_KEY);
-        window.location.href = "login.html";
+        window.location.replace("login.html");
     };
 })();
