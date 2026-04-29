@@ -5,34 +5,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kegiatan - Keluarga Besar</title>
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f8f9fa; }
-        .page-header { background: #2e7d32; color: white; padding: 60px 0; margin-bottom: 40px; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        :root {
+            --primary-color: #2e7d32;
+            --accent-color: #1b5e20;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f0f2f5; 
+            color: #333;
+        }
+        .hero-section { 
+            background: linear-gradient(rgba(46, 125, 50, 0.8), rgba(27, 94, 32, 0.9)), url('assets/login-bg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            color: white; 
+            padding: 80px 0; 
+            margin-bottom: 40px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .card { 
+            border: none; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        .list-group-item {
+            border: none;
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 15px !important;
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .list-group-item:hover {
+            background: #f8f9fa;
+            padding-left: 25px;
+        }
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        .btn-back {
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .btn-back:hover {
+            background: white;
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
-    <header class="page-header text-center">
+    <header class="hero-section text-center">
         <div class="container">
-            <h1 class="fw-bold">📅 Kegiatan Keluarga</h1>
-            <p class="lead">Riwayat dan Jadwal Kegiatan Mendatang</p>
-            <a href="index.html" class="btn btn-outline-light mt-3">← Kembali ke Pohon</a>
+            <h1 class="display-4 fw-bold mb-2">📅 Kegiatan Keluarga</h1>
+            <p class="lead opacity-75">Momen kebersamaan yang tak terlupakan</p>
+            <a href="index.html" class="btn btn-back mt-4">
+                <i class="bi bi-arrow-left me-2"></i> Kembali ke Pohon
+            </a>
         </div>
     </header>
 
     <main class="container mb-5">
         <div class="row g-4">
             <div class="col-md-6">
-                <div class="card p-4 h-100">
-                    <h4 class="fw-bold text-success mb-3">Kegiatan Mendatang</h4>
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item">
+                <h4 class="section-title">Kegiatan Mendatang</h4>
+                <div class="list-group">
+                    <div class="list-group-item d-flex align-items-center">
+                        <div class="icon-box"><i class="bi bi-calendar-event"></i></div>
+                        <div>
                             <h6 class="mb-1 fw-bold">Halal Bihalal Idul Fitri 1445 H</h6>
                             <p class="text-muted small mb-0">Sabtu, 11 Mei 2024 • Kediaman Ibu Siti</p>
                         </div>
-                        <div class="list-group-item">
+                    </div>
+                    <div class="list-group-item d-flex align-items-center">
+                        <div class="icon-box"><i class="bi bi-people"></i></div>
+                        <div>
                             <h6 class="mb-1 fw-bold">Rapat Pengurus Arisan</h6>
                             <p class="text-muted small mb-0">Minggu, 2 Juni 2024 • Zoom Meeting</p>
                         </div>
@@ -40,14 +126,18 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card p-4 h-100">
-                    <h4 class="fw-bold text-muted mb-3">Riwayat Kegiatan</h4>
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item">
+                <h4 class="section-title text-muted">Riwayat Kegiatan</h4>
+                <div class="list-group">
+                    <div class="list-group-item d-flex align-items-center">
+                        <div class="icon-box"><i class="bi bi-check-circle"></i></div>
+                        <div>
                             <h6 class="mb-1 fw-bold">Ziarah Bersama Tahun Baru</h6>
                             <p class="text-muted small mb-0">Januari 2024 • Bogor</p>
                         </div>
-                        <div class="list-group-item">
+                    </div>
+                    <div class="list-group-item d-flex align-items-center">
+                        <div class="icon-box"><i class="bi bi-check-circle"></i></div>
+                        <div>
                             <h6 class="mb-1 fw-bold">Arisan Bulanan & Doa Bersama</h6>
                             <p class="text-muted small mb-0">Desember 2023 • Kediaman Bpk. Yusuf</p>
                         </div>

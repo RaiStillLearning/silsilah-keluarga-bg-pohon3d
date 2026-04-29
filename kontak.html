@@ -6,53 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontak Pengurus - Keluarga Besar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f8f9fa; }
-        .page-header { background: #3949ab; color: white; padding: 60px 0; margin-bottom: 40px; }
-        .contact-card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        :root { --primary: #2e7d32; --secondary: #1b5e20; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #333; }
+        .hero-section { 
+            background: linear-gradient(rgba(46, 125, 50, 0.9), rgba(27, 94, 32, 0.95)), url('assets/login-bg.jpg'); 
+            background-size: cover; background-position: center;
+            color: white; padding: 70px 0; text-align: center;
+        }
+        .contact-card {
+            background: white; border-radius: 24px; padding: 30px;
+            border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            display: flex; align-items: center; margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
+        .contact-avatar {
+            width: 60px; height: 60px; border-radius: 18px;
+            background: #e8f5e9; color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; margin-right: 20px;
+        }
+        .contact-info h6 { margin: 0; font-weight: 700; color: #333; }
+        .contact-info p { margin: 0; font-size: 0.85rem; color: #777; }
+        .btn-call {
+            margin-left: auto; width: 40px; height: 40px; border-radius: 12px;
+            background: #f0f7f0; color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn-call:hover { background: var(--primary); color: white; }
+        .btn-back {
+            border-radius: 12px; padding: 10px 20px; font-weight: 600;
+            backdrop-filter: blur(5px); border: 2px solid rgba(255,255,255,0.3); color: white; text-decoration: none;
+        }
+        .btn-back:hover { background: white; color: var(--primary); }
     </style>
 </head>
 <body>
-    <header class="page-header text-center">
+    <header class="hero-section">
         <div class="container">
-            <h1 class="fw-bold">📞 Kontak Pengurus</h1>
-            <p class="lead">Hubungi Pengurus untuk Informasi Lebih Lanjut</p>
-            <a href="index.html" class="btn btn-outline-light mt-3">← Kembali ke Pohon</a>
+            <h1 class="display-5 fw-bold mb-2">📞 Kontak Pengurus</h1>
+            <p class="lead opacity-75">Hubungi kami untuk informasi seputar kegiatan keluarga</p>
+            <a href="index.html" class="btn-back d-inline-block mt-3">← Kembali ke Pohon</a>
         </div>
     </header>
 
-    <main class="container mb-5">
+    <main class="container py-5 my-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card contact-card p-4">
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Bpk. Yusuf Lubis</h6>
-                                <small class="text-muted">Ketua Umum Paguyuban</small>
-                            </div>
-                            <a href="tel:+" class="btn btn-sm btn-success text-white">📞 Hubungi</a>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Ibu Tri Winarni</h6>
-                                <small class="text-muted">Bendahara Kas Keluarga</small>
-                            </div>
-                            <a href="https://wa.me/" class="btn btn-sm btn-outline-success">💬 WhatsApp</a>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Achmad Dimyati</h6>
-                                <small class="text-muted">Sekretaris & Admin Web</small>
-                            </div>
-                            <a href="mailto:admin@keluarga.com" class="btn btn-sm btn-outline-primary">✉️ Email</a>
-                        </div>
+            <div class="col-md-7">
+                <div class="contact-card">
+                    <div class="contact-avatar"><i class="bi bi-person-badge"></i></div>
+                    <div class="contact-info">
+                        <h6>Bpk. Yusuf</h6>
+                        <p>Ketua Arisan & Koordinator Utama</p>
                     </div>
+                    <a href="#" class="btn-call"><i class="bi bi-whatsapp"></i></a>
                 </div>
-                
-                <div class="alert alert-info mt-4" role="alert">
-                    <strong>Catatan:</strong> Informasi kontak ini hanya untuk keperluan internal keluarga. Mohon tidak menyebarkan data ini ke pihak luar.
+
+                <div class="contact-card">
+                    <div class="contact-avatar"><i class="bi bi-person-fill"></i></div>
+                    <div class="contact-info">
+                        <h6>Ibu Siti</h6>
+                        <p>Bendahara & Dokumentasi</p>
+                    </div>
+                    <a href="#" class="btn-call"><i class="bi bi-whatsapp"></i></a>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-avatar"><i class="bi bi-tools"></i></div>
+                    <div class="contact-info">
+                        <h6>Tim IT Keluarga</h6>
+                        <p>Dukungan teknis aplikasi Silsilah</p>
+                    </div>
+                    <a href="#" class="btn-call"><i class="bi bi-envelope"></i></a>
                 </div>
             </div>
         </div>

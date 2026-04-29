@@ -6,50 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In Memoriam - Keluarga Besar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #fdfcfb; }
-        .page-header { background: #455a64; color: white; padding: 60px 0; margin-bottom: 40px; }
-        .memorial-card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; padding: 30px; margin-bottom: 30px; }
-        .memorial-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; filter: grayscale(100%); margin-bottom: 20px; border: 4px solid #eee; }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #444; }
+        .hero-section { 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('assets/login-bg.jpg'); 
+            background-size: cover; background-position: center;
+            color: white; padding: 100px 0; text-align: center;
+        }
+        .memorial-card {
+            border: none; border-radius: 24px; background: #fafafa;
+            padding: 40px; text-align: center; transition: all 0.4s ease;
+            border: 1px solid #eee;
+        }
+        .memorial-card:hover { background: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transform: translateY(-5px); }
+        .memorial-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            object-fit: cover; margin-bottom: 20px; border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .quote { font-style: italic; color: #777; margin-top: 15px; }
+        .btn-back {
+            border-radius: 12px; padding: 10px 20px; font-weight: 600;
+            backdrop-filter: blur(5px); border: 2px solid rgba(255,255,255,0.3); color: white; text-decoration: none;
+        }
+        .btn-back:hover { background: white; color: #333; }
     </style>
 </head>
 <body>
-    <header class="page-header text-center">
+    <header class="hero-section">
         <div class="container">
-            <h1 class="fw-bold">🕯️ In Memoriam</h1>
-            <p class="lead italic">"Mengenang Kasih dan Teladan yang Takkan Terlupakan"</p>
-            <a href="index.html" class="btn btn-outline-light mt-3">← Kembali ke Pohon</a>
+            <h1 class="display-4 fw-bold mb-3">🕯️ In Memoriam</h1>
+            <p class="lead opacity-75">Mengenang jasa dan kasih sayang mereka yang telah mendahului kita</p>
+            <a href="index.html" class="btn-back d-inline-block mt-4">← Kembali ke Pohon</a>
         </div>
     </header>
 
-    <main class="container mb-5">
-        <div class="row g-4">
-            <div class="col-md-4">
+    <main class="container py-5 my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
                 <div class="memorial-card">
-                    <img src="assets/female.svg" class="memorial-avatar" alt="Siti Zubaidah">
-                    <h5 class="fw-bold">Siti Zubaidah</h5>
-                    <p class="text-muted small">Wafat: 9 April 1993</p>
-                    <hr>
-                    <p class="fst-italic text-secondary">"Ibu yang penyayang dan tiang kekuatan keluarga."</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="memorial-card">
-                    <img src="assets/male.svg" class="memorial-avatar" alt="Agus Pribadi">
-                    <h5 class="fw-bold">Agus Pribadi</h5>
-                    <p class="text-muted small">Wafat: 27 Maret 2026</p>
-                    <hr>
-                    <p class="fst-italic text-secondary">"Sosok ayah yang berdedikasi dan penuh semangat."</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="memorial-card">
-                    <img src="assets/female.svg" class="memorial-avatar" alt="Ade Irma Soraya">
-                    <h5 class="fw-bold">Ade Irma Soraya</h5>
-                    <p class="text-muted small">Wafat: 27 Februari 2022</p>
-                    <hr>
-                    <p class="fst-italic text-secondary">"Kebaikan hatinya akan selalu dikenang oleh kami semua."</p>
+                    <img src="assets/male.svg" class="memorial-avatar" alt="Mendiang">
+                    <h3 class="fw-bold mb-1">Alm. Yusuf Lubis</h3>
+                    <p class="text-muted small mb-3">1945 - 2020</p>
+                    <p class="quote">"Kasih sayangmu akan selalu hidup dalam ingatan kami dan mengalir dalam silsilah keluarga ini."</p>
+                    <div class="mt-4">
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2">Generasi Pertama</span>
+                    </div>
                 </div>
             </div>
         </div>
