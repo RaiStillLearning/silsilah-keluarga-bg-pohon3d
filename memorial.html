@@ -20,12 +20,13 @@
         .memorial-card {
             border: none; border-radius: 24px; background: #fafafa;
             padding: 40px; text-align: center; transition: all 0.4s ease;
-            border: 1px solid #eee; position: relative;
+            border: 1px solid #eee; position: relative; height: 100%;
         }
         .memorial-avatar {
             width: 120px; height: 120px; border-radius: 50%;
             object-fit: cover; margin-bottom: 20px; border: 4px solid white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background: #eee;
         }
         .admin-controls { display: none; }
         .delete-btn { position: absolute; top: 20px; right: 20px; color: #dc3545; cursor: pointer; display: none; }
@@ -69,6 +70,13 @@
                             <input type="text" id="name" class="form-control" required>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label small fw-bold">Jenis Kelamin</label>
+                            <select id="gender" class="form-select">
+                                <option value="pria">Pria</option>
+                                <option value="wanita">Wanita</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label small fw-bold">Tahun (Lahir - Wafat)</label>
                             <input type="text" id="years" class="form-control" placeholder="19xx - 20xx" required>
                         </div>
@@ -104,15 +112,18 @@
             }
 
             data.forEach(item => {
+                // Tentukan avatar berdasarkan gender
+                const avatarImg = item.gender === 'wanita' ? 'assets/female.svg' : 'assets/male.svg';
+                
                 list.innerHTML += `
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 col-lg-4 text-center">
                         <div class="memorial-card">
                             ${window.isAdmin() ? `<i class="bi bi-trash delete-btn" style="display:block" onclick="deleteItem(${item.id})"></i>` : ''}
-                            <img src="assets/male.svg" class="memorial-avatar" alt="Mendiang">
+                            <img src="${avatarImg}" class="memorial-avatar" alt="${item.gender}">
                             <h3 class="fw-bold mb-1">${item.name}</h3>
                             <p class="text-muted small mb-3">${item.years}</p>
                             <p class="font-italic text-muted">"${item.quote}"</p>
-                            <div class="mt-4">
+                            <div class="mt-auto pt-4">
                                 <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2">${item.category}</span>
                             </div>
                         </div>
@@ -129,6 +140,7 @@
 
             const newItem = {
                 name: document.getElementById('name').value,
+                gender: document.getElementById('gender').value,
                 years: document.getElementById('years').value,
                 quote: document.getElementById('quote').value,
                 category: document.getElementById('category').value
