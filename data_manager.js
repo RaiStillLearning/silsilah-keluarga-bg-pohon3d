@@ -3,10 +3,11 @@
  * Powered by Supabase for permanent cloud storage.
  */
 
-// Initialize Supabase Client
-const SUPABASE_URL = "https://gtuplmzrnggflusstydg.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0dXBsbXpybmdnZmx1c3N0eWRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MzkyMDcsImV4cCI6MjA5MzIxNTIwN30.hRqHPkQFbrTw5lFmxtDuACJdK68pwkUncDMDWgCJqNE";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Ubah nama variabel agar tidak bentrok dengan global 'supabase' dari CDN
+const _supabase = supabase.createClient(
+    "https://gtuplmzrnggflusstydg.supabase.co", 
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0dXBsbXpybmdnZmx1c3N0eWRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MzkyMDcsImV4cCI6MjA5MzIxNTIwN30.hRqHPkQFbrTw5lFmxtDuACJdK68pwkUncDMDWgCJqNE"
+);
 
 const DataManager = {
     // Table Names
@@ -18,7 +19,7 @@ const DataManager = {
     },
 
     async getAllData(tableName) {
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from(tableName)
             .select('*')
             .order('created_at', { ascending: false });
@@ -31,13 +32,12 @@ const DataManager = {
     },
 
     async addItem(tableName, item) {
-        // Map frontend fields to DB fields if necessary
         if (tableName === this.TABLES.KEUANGAN && item.desc) {
             item.description = item.desc;
             delete item.desc;
         }
 
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from(tableName)
             .insert([item])
             .select();
@@ -50,7 +50,7 @@ const DataManager = {
     },
 
     async deleteItem(tableName, id) {
-        const { error } = await supabase
+        const { error } = await _supabase
             .from(tableName)
             .delete()
             .eq('id', id);
@@ -62,8 +62,6 @@ const DataManager = {
         return true;
     },
 
-    // Legacy support for getData (mapped to Supabase now)
-    // Note: Since Supabase is async, pages will need minor updates to use await
     KEYS: {
         KEGIATAN: 'kegiatan',
         KEUANGAN: 'keuangan',
