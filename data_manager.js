@@ -10,15 +10,15 @@ const DataManager = {
         KONTAK: 'family_data_kontak'
     },
 
-    // Initial Default Data
+    // Initial Default Data (Updated to 2026)
     DEFAULTS: {
         KEGIATAN: [
-            { id: 1, title: "Halal Bihalal Idul Fitri 1445 H", date: "2024-05-11", location: "Kediaman Ibu Siti", type: "upcoming" },
-            { id: 2, title: "Ziarah Bersama Tahun Baru", date: "2024-01-15", location: "Bogor", type: "history" }
+            { id: 1, title: "Halal Bihalal Idul Fitri 1447 H", date: "2026-04-11", location: "Kediaman Ibu Siti", type: "upcoming" },
+            { id: 2, title: "Ziarah Bersama Tahun Baru", date: "2026-01-15", location: "Bogor", type: "history" }
         ],
         KEUANGAN: [
-            { id: 1, date: "2024-04-05", desc: "Iuran Arisan Bulanan", type: "masuk", amount: 1500000 },
-            { id: 2, date: "2024-04-02", desc: "Sumbangan Sosial (Duka)", type: "keluar", amount: 500000 }
+            { id: 1, date: "2026-04-05", desc: "Iuran Arisan Bulanan", type: "masuk", amount: 1500000 },
+            { id: 2, date: "2026-04-02", desc: "Sumbangan Sosial (Duka)", type: "keluar", amount: 500000 }
         ],
         MEMORIAL: [
             { id: 1, name: "Alm. Yusuf Lubis", years: "1945 - 2020", quote: "Kasih sayangmu akan selalu hidup dalam ingatan kami.", category: "Generasi Pertama" }
@@ -32,7 +32,6 @@ const DataManager = {
     getData(key) {
         const data = localStorage.getItem(key);
         if (!data) {
-            // Load defaults if empty
             const defaultKey = Object.keys(this.KEYS).find(k => this.KEYS[k] === key);
             this.saveData(key, this.DEFAULTS[defaultKey]);
             return this.DEFAULTS[defaultKey];
@@ -46,7 +45,7 @@ const DataManager = {
 
     addItem(key, item) {
         const data = this.getData(key);
-        item.id = Date.now(); // Simple ID generation
+        item.id = Date.now();
         data.push(item);
         this.saveData(key, data);
         return item;
@@ -59,5 +58,4 @@ const DataManager = {
     }
 };
 
-// Export for use in pages
 window.DataManager = DataManager;
