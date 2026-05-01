@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="security.js"></script>
+    <script src="data_manager.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In Memoriam - Keluarga Besar</title>
@@ -13,50 +14,126 @@
         .hero-section { 
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('assets/login-bg.jpg'); 
             background-size: cover; background-position: center;
-            color: white; padding: 100px 0; text-align: center;
+            color: white; padding: 80px 0; text-align: center;
         }
         .memorial-card {
             border: none; border-radius: 24px; background: #fafafa;
             padding: 40px; text-align: center; transition: all 0.4s ease;
-            border: 1px solid #eee;
+            border: 1px solid #eee; position: relative;
         }
-        .memorial-card:hover { background: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transform: translateY(-5px); }
         .memorial-avatar {
             width: 120px; height: 120px; border-radius: 50%;
             object-fit: cover; margin-bottom: 20px; border: 4px solid white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .quote { font-style: italic; color: #777; margin-top: 15px; }
-        .btn-back {
-            border-radius: 12px; padding: 10px 20px; font-weight: 600;
-            backdrop-filter: blur(5px); border: 2px solid rgba(255,255,255,0.3); color: white; text-decoration: none;
-        }
-        .btn-back:hover { background: white; color: #333; }
+        .admin-controls { display: none; }
+        .delete-btn { position: absolute; top: 20px; right: 20px; color: #dc3545; cursor: pointer; display: none; }
     </style>
 </head>
 <body>
     <header class="hero-section">
         <div class="container">
             <h1 class="display-4 fw-bold mb-3">🕯️ In Memoriam</h1>
-            <p class="lead opacity-75">Mengenang jasa dan kasih sayang mereka yang telah mendahului kita</p>
-            <a href="index.html" class="btn-back d-inline-block mt-4">← Kembali ke Pohon</a>
+            <p class="lead opacity-75">Mengenang jasa dan kasih sayang keluarga</p>
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                <button class="btn btn-light rounded-pill px-4 admin-controls" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus-lg me-1"></i> Tambah Kenangan
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="container py-5 my-4">
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <div class="memorial-card">
-                    <img src="assets/male.svg" class="memorial-avatar" alt="Mendiang">
-                    <h3 class="fw-bold mb-1">Alm. Yusuf Lubis</h3>
-                    <p class="text-muted small mb-3">1945 - 2020</p>
-                    <p class="quote">"Kasih sayangmu akan selalu hidup dalam ingatan kami dan mengalir dalam silsilah keluarga ini."</p>
-                    <div class="mt-4">
-                        <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2">Generasi Pertama</span>
-                    </div>
+    <main class="container py-5">
+        <div id="memorialList" class="row g-4 justify-content-center">
+            <!-- Data loaded by JS -->
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+                <div class="modal-header border-0">
+                    <h5 class="fw-bold">Tambah Kenangan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="memorialForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nama Lengkap</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Tahun (Lahir - Wafat)</label>
+                            <input type="text" id="years" class="form-control" placeholder="19xx - 20xx" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Kutipan/Pesan</label>
+                            <textarea id="quote" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Kategori (Generasi)</label>
+                            <input type="text" id="category" class="form-control" placeholder="Misal: Generasi Pertama" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Data</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        if (window.isAdmin()) {
+            document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'block');
+        }
+
+        function renderData() {
+            const data = DataManager.getData(DataManager.KEYS.MEMORIAL);
+            const list = document.getElementById('memorialList');
+            list.innerHTML = '';
+
+            data.forEach(item => {
+                list.innerHTML += `
+                    <div class="col-md-6 text-center">
+                        <div class="memorial-card">
+                            ${window.isAdmin() ? `<i class="bi bi-trash delete-btn" style="display:block" onclick="deleteItem(${item.id})"></i>` : ''}
+                            <img src="assets/male.svg" class="memorial-avatar" alt="Mendiang">
+                            <h3 class="fw-bold mb-1">${item.name}</h3>
+                            <p class="text-muted small mb-3">${item.years}</p>
+                            <p class="font-italic text-muted">"${item.quote}"</p>
+                            <div class="mt-4">
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2">${item.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('memorialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newItem = {
+                name: document.getElementById('name').value,
+                years: document.getElementById('years').value,
+                quote: document.getElementById('quote').value,
+                category: document.getElementById('category').value
+            };
+            DataManager.addItem(DataManager.KEYS.MEMORIAL, newItem);
+            bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            this.reset();
+            renderData();
+        });
+
+        window.deleteItem = function(id) {
+            if (confirm('Hapus data kenangan ini?')) {
+                DataManager.deleteItem(DataManager.KEYS.MEMORIAL, id);
+                renderData();
+            }
+        }
+
+        renderData();
+    </script>
 </body>
 </html>

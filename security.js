@@ -1,13 +1,17 @@
 /**
  * Security script for Family Tree protected pages.
- * Ensures the user has entered the correct username and password.
  */
 (function() {
-    const HASHED_PASSWORD = "d21e13f6c20c00f20f7d3682ae81c77cb77bf1ff5fc8457a6a946f7af0248f7f"; // SHA-256 of 'keluargaku'
-    const VALID_USERNAME = "keluarga@gmail.com";
-    const AUTH_KEY = "family_tree_auth";
+    const HASHED_MEMBER = "d21e13f6c20c00f20f7d3682ae81c77cb77bf1ff5fc8457a6a946f7af0248f7f";
+    const HASHED_ADMIN = "6acdc47ff6574a1e6679f856058428c35c15104a1abe62b2b35c01c4e21f7de3"; // keluargaku123
 
-    // Helper function to hash a string using SHA-256
+    
+    const VALID_MEMBER_EMAIL = "keluarga@gmail.com";
+    const VALID_ADMIN_EMAIL = "admin@gmail.com";
+    
+    const AUTH_KEY = "family_tree_auth";
+    const ROLE_KEY = "family_tree_role";
+
     async function sha256(message) {
         const msgBuffer = new TextEncoder().encode(message);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -17,32 +21,30 @@
     }
 
     function checkAuth() {
-        // Jika sudah di halaman login, jangan redirect lagi
         if (window.location.pathname.includes("login.html")) return;
-
         const isAuth = localStorage.getItem(AUTH_KEY) === "true";
-        
         if (!isAuth) {
-            // Simpan URL asal untuk kembali setelah login
+            document.documentElement.style.display = 'none';
             localStorage.setItem("redirect_after_login", window.location.href);
-            // Paksa pindah ke login.html segera
             window.location.replace("login.html");
-            
-            // Tambahan: Sembunyikan body jika redirect tertunda
-            document.write('<style>body { display:none !important; }</style>');
         }
     }
 
-    // Jalankan pengecekan segera setelah file dimuat
     checkAuth();
 
-    // Export fungsi verifikasi ke window agar bisa dipakai di login.html
     window.verifyFamilyLogin = async function(username, password, skipRedirect = false) {
-        if (username !== VALID_USERNAME) return false;
-        
         const inputHash = await sha256(password);
-        if (inputHash === HASHED_PASSWORD) {
+        let role = null;
+
+        if (username === VALID_ADMIN_EMAIL && inputHash === HASHED_ADMIN) {
+            role = "admin";
+        } else if (username === VALID_MEMBER_EMAIL && inputHash === HASHED_MEMBER) {
+            role = "member";
+        }
+
+        if (role) {
             localStorage.setItem(AUTH_KEY, "true");
+            localStorage.setItem(ROLE_KEY, role);
             if (!skipRedirect) {
                 const redirect = localStorage.getItem("redirect_after_login") || "index.html";
                 localStorage.removeItem("redirect_after_login");
@@ -53,8 +55,13 @@
         return false;
     };
 
+    window.isAdmin = function() {
+        return localStorage.getItem(ROLE_KEY) === "admin";
+    };
+
     window.logoutFamily = function() {
         localStorage.removeItem(AUTH_KEY);
+        localStorage.removeItem(ROLE_KEY);
         window.location.replace("login.html");
     };
 })();

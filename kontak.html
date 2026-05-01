@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="security.js"></script>
+    <script src="data_manager.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontak Pengurus - Keluarga Besar</title>
@@ -9,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        :root { --primary: #2e7d32; --secondary: #1b5e20; }
+        :root { --primary: #2e7d32; }
         body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #333; }
         .hero-section { 
             background: linear-gradient(rgba(46, 125, 50, 0.9), rgba(27, 94, 32, 0.95)), url('assets/login-bg.jpg'); 
@@ -20,29 +21,22 @@
             background: white; border-radius: 24px; padding: 30px;
             border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             display: flex; align-items: center; margin-bottom: 20px;
-            transition: all 0.3s ease;
+            position: relative;
         }
-        .contact-card:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
         .contact-avatar {
             width: 60px; height: 60px; border-radius: 18px;
             background: #e8f5e9; color: var(--primary);
             display: flex; align-items: center; justify-content: center;
             font-size: 24px; margin-right: 20px;
         }
-        .contact-info h6 { margin: 0; font-weight: 700; color: #333; }
-        .contact-info p { margin: 0; font-size: 0.85rem; color: #777; }
         .btn-call {
             margin-left: auto; width: 40px; height: 40px; border-radius: 12px;
             background: #f0f7f0; color: var(--primary);
             display: flex; align-items: center; justify-content: center;
-            text-decoration: none; transition: all 0.2s;
+            text-decoration: none;
         }
-        .btn-call:hover { background: var(--primary); color: white; }
-        .btn-back {
-            border-radius: 12px; padding: 10px 20px; font-weight: 600;
-            backdrop-filter: blur(5px); border: 2px solid rgba(255,255,255,0.3); color: white; text-decoration: none;
-        }
-        .btn-back:hover { background: white; color: var(--primary); }
+        .admin-controls { display: none; }
+        .delete-btn { color: #dc3545; cursor: pointer; margin-left: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -50,41 +44,101 @@
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">📞 Kontak Pengurus</h1>
             <p class="lead opacity-75">Hubungi kami untuk informasi seputar kegiatan keluarga</p>
-            <a href="index.html" class="btn-back d-inline-block mt-3">← Kembali ke Pohon</a>
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                <button class="btn btn-light rounded-pill px-4 admin-controls" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus-lg me-1"></i> Tambah Kontak
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="container py-5 my-4">
+    <main class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="contact-card">
-                    <div class="contact-avatar"><i class="bi bi-person-badge"></i></div>
-                    <div class="contact-info">
-                        <h6>Bpk. Yusuf</h6>
-                        <p>Ketua Arisan & Koordinator Utama</p>
-                    </div>
-                    <a href="#" class="btn-call"><i class="bi bi-whatsapp"></i></a>
-                </div>
-
-                <div class="contact-card">
-                    <div class="contact-avatar"><i class="bi bi-person-fill"></i></div>
-                    <div class="contact-info">
-                        <h6>Ibu Siti</h6>
-                        <p>Bendahara & Dokumentasi</p>
-                    </div>
-                    <a href="#" class="btn-call"><i class="bi bi-whatsapp"></i></a>
-                </div>
-
-                <div class="contact-card">
-                    <div class="contact-avatar"><i class="bi bi-tools"></i></div>
-                    <div class="contact-info">
-                        <h6>Tim IT Keluarga</h6>
-                        <p>Dukungan teknis aplikasi Silsilah</p>
-                    </div>
-                    <a href="#" class="btn-call"><i class="bi bi-envelope"></i></a>
-                </div>
+            <div id="contactList" class="col-md-7">
+                <!-- Data loaded by JS -->
             </div>
         </div>
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+                <div class="modal-header border-0">
+                    <h5 class="fw-bold">Tambah Kontak Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nama Pengurus</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Jabatan/Role</label>
+                            <input type="text" id="role" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nomor WhatsApp/Email</label>
+                            <input type="text" id="phone" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Kontak</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        if (window.isAdmin()) {
+            document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'block');
+        }
+
+        function renderData() {
+            const data = DataManager.getData(DataManager.KEYS.KONTAK);
+            const list = document.getElementById('contactList');
+            list.innerHTML = '';
+
+            data.forEach(item => {
+                list.innerHTML += `
+                    <div class="contact-card">
+                        <div class="contact-avatar"><i class="bi bi-person-badge"></i></div>
+                        <div class="contact-info">
+                            <h6 class="fw-bold m-0">${item.name}</h6>
+                            <p class="text-muted small m-0">${item.role}</p>
+                        </div>
+                        <div class="d-flex align-items-center ms-auto">
+                            <a href="https://wa.me/${item.phone}" target="_blank" class="btn-call"><i class="bi bi-whatsapp"></i></a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                            ${window.isAdmin() ? `<i class="bi bi-trash delete-btn" style="display:block" onclick="deleteItem(${item.id})"></i>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newItem = {
+                name: document.getElementById('name').value,
+                role: document.getElementById('role').value,
+                phone: document.getElementById('phone').value
+            };
+            DataManager.addItem(DataManager.KEYS.KONTAK, newItem);
+            bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            this.reset();
+            renderData();
+        });
+
+        window.deleteItem = function(id) {
+            if (confirm('Hapus kontak ini?')) {
+                DataManager.deleteItem(DataManager.KEYS.KONTAK, id);
+                renderData();
+            }
+        }
+
+        renderData();
+    </script>
 </body>
 </html>
