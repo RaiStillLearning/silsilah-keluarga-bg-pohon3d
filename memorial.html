@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="security.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="data_manager.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,17 +37,20 @@
             <h1 class="display-4 fw-bold mb-3">🕯️ In Memoriam</h1>
             <p class="lead opacity-75">Mengenang jasa dan kasih sayang keluarga</p>
             <div class="d-flex justify-content-center gap-2 mt-4">
-                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a>
                 <button class="btn btn-light rounded-pill px-4 admin-controls" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="bi bi-plus-lg me-1"></i> Tambah Kenangan
                 </button>
+                <a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()">
+                    <i class="bi bi-box-arrow-left me-1"></i> Logout
+                </a>
             </div>
         </div>
     </header>
 
     <main class="container py-5">
         <div id="memorialList" class="row g-4 justify-content-center">
-            <!-- Data loaded by JS -->
+            <div class="col-12 text-center py-5"><div class="spinner-border text-success"></div></div>
         </div>
     </main>
 
@@ -76,7 +80,7 @@
                             <label class="form-label small fw-bold">Kategori (Generasi)</label>
                             <input type="text" id="category" class="form-control" placeholder="Misal: Generasi Pertama" required>
                         </div>
-                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Data</button>
+                        <button type="submit" id="saveBtn" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Data</button>
                     </form>
                 </div>
             </div>
@@ -89,10 +93,15 @@
             document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'block');
         }
 
-        function renderData() {
-            const data = DataManager.getData(DataManager.KEYS.MEMORIAL);
+        async function renderData() {
+            const data = await DataManager.getAllData(DataManager.TABLES.MEMORIAL);
             const list = document.getElementById('memorialList');
             list.innerHTML = '';
+
+            if (data.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted">Belum ada data kenangan.</p>';
+                return;
+            }
 
             data.forEach(item => {
                 list.innerHTML += `
@@ -112,23 +121,31 @@
             });
         }
 
-        document.getElementById('memorialForm').addEventListener('submit', function(e) {
+        document.getElementById('memorialForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...';
+
             const newItem = {
                 name: document.getElementById('name').value,
                 years: document.getElementById('years').value,
                 quote: document.getElementById('quote').value,
                 category: document.getElementById('category').value
             };
-            DataManager.addItem(DataManager.KEYS.MEMORIAL, newItem);
+            
+            await DataManager.addItem(DataManager.TABLES.MEMORIAL, newItem);
+            
             bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = 'Simpan Data';
             this.reset();
             renderData();
         });
 
-        window.deleteItem = function(id) {
-            if (confirm('Hapus data kenangan ini?')) {
-                DataManager.deleteItem(DataManager.KEYS.MEMORIAL, id);
+        window.deleteItem = async function(id) {
+            if (confirm('Hapus data kenangan ini secara permanen?')) {
+                await DataManager.deleteItem(DataManager.TABLES.MEMORIAL, id);
                 renderData();
             }
         }

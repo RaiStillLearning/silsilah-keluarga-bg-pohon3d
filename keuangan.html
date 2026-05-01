@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="security.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="data_manager.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,10 +37,13 @@
             <h1 class="display-5 fw-bold mb-2">💰 Keuangan Keluarga</h1>
             <p class="lead opacity-75">Transparansi dana untuk kesejahteraan bersama</p>
             <div class="d-flex justify-content-center gap-2 mt-4">
-                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a>
                 <button id="addBtn" class="btn btn-light rounded-pill px-4 admin-controls" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="bi bi-plus-lg me-1"></i> Tambah Transaksi
                 </button>
+                <a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()">
+                    <i class="bi bi-box-arrow-left me-1"></i> Logout
+                </a>
             </div>
         </div>
     </header>
@@ -80,7 +84,7 @@
                         </tr>
                     </thead>
                     <tbody id="keuanganList">
-                        <!-- Data loaded by JS -->
+                        <tr><td colspan="5" class="text-center py-4"><div class="spinner-border text-success"></div></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -116,7 +120,7 @@
                                 <option value="keluar">Keluar</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Transaksi</button>
+                        <button type="submit" id="saveBtn" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Transaksi</button>
                     </form>
                 </div>
             </div>
@@ -133,12 +137,17 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
         }
 
-        function renderData() {
-            const data = DataManager.getData(DataManager.KEYS.KEUANGAN);
+        async function renderData() {
+            const data = await DataManager.getAllData(DataManager.TABLES.KEUANGAN);
             const list = document.getElementById('keuanganList');
             let totalMasuk = 0, totalKeluar = 0;
 
             list.innerHTML = '';
+            
+            if (data.length === 0) {
+                list.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Belum ada transaksi.</td></tr>';
+            }
+
             data.forEach(item => {
                 const amount = parseInt(item.amount);
                 if (item.type === 'masuk') totalMasuk += amount;
@@ -147,7 +156,7 @@
                 list.innerHTML += `
                     <tr>
                         <td class="text-muted small">${item.date}</td>
-                        <td class="fw-semibold">${item.desc}</td>
+                        <td class="fw-semibold">${item.description || item.desc}</td>
                         <td><span class="${item.type === 'masuk' ? 'badge-income' : 'badge-expense'} fw-bold small">${item.type.toUpperCase()}</span></td>
                         <td class="text-end ${item.type === 'masuk' ? 'text-success' : 'text-danger'} fw-bold">
                             ${item.type === 'masuk' ? '+' : '-'} ${formatIDR(amount)}
@@ -163,29 +172,36 @@
             document.getElementById('totalKeluar').innerText = formatIDR(totalKeluar);
             document.getElementById('totalSaldo').innerText = formatIDR(totalMasuk - totalKeluar);
             
-            // Re-hide admin controls in table if needed
             if (!window.isAdmin()) {
                 document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'none');
             }
         }
 
-        document.getElementById('keuanganForm').addEventListener('submit', function(e) {
+        document.getElementById('keuanganForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...';
+
             const newItem = {
                 desc: document.getElementById('desc').value,
                 date: document.getElementById('date').value,
                 amount: document.getElementById('amount').value,
                 type: document.getElementById('type').value
             };
-            DataManager.addItem(DataManager.KEYS.KEUANGAN, newItem);
+            
+            await DataManager.addItem(DataManager.TABLES.KEUANGAN, newItem);
+            
             bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = 'Simpan Transaksi';
             this.reset();
             renderData();
         });
 
-        window.deleteItem = function(id) {
-            if (confirm('Hapus transaksi ini?')) {
-                DataManager.deleteItem(DataManager.KEYS.KEUANGAN, id);
+        window.deleteItem = async function(id) {
+            if (confirm('Hapus transaksi ini secara permanen?')) {
+                await DataManager.deleteItem(DataManager.TABLES.KEUANGAN, id);
                 renderData();
             }
         }

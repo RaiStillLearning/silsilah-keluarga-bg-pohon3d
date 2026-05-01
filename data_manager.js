@@ -1,60 +1,74 @@
 /**
  * Data Manager for Family Tree App.
- * Handles persistence for activities, finances, memorials, and contacts.
+ * Powered by Supabase for permanent cloud storage.
  */
+
+// Initialize Supabase Client
+const SUPABASE_URL = "https://gtuplmzrnggflusstydg.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0dXBsbXpybmdnZmx1c3N0eWRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MzkyMDcsImV4cCI6MjA5MzIxNTIwN30.hRqHPkQFbrTw5lFmxtDuACJdK68pwkUncDMDWgCJqNE";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const DataManager = {
-    KEYS: {
-        KEGIATAN: 'family_data_kegiatan',
-        KEUANGAN: 'family_data_keuangan',
-        MEMORIAL: 'family_data_memorial',
-        KONTAK: 'family_data_kontak'
+    // Table Names
+    TABLES: {
+        KEGIATAN: 'kegiatan',
+        KEUANGAN: 'keuangan',
+        MEMORIAL: 'memorial',
+        KONTAK: 'kontak'
     },
 
-    // Initial Default Data (Updated to 2026)
-    DEFAULTS: {
-        KEGIATAN: [
-            { id: 1, title: "Halal Bihalal Idul Fitri 1447 H", date: "2026-04-11", location: "Kediaman Ibu Siti", type: "upcoming" },
-            { id: 2, title: "Ziarah Bersama Tahun Baru", date: "2026-01-15", location: "Bogor", type: "history" }
-        ],
-        KEUANGAN: [
-            { id: 1, date: "2026-04-05", desc: "Iuran Arisan Bulanan", type: "masuk", amount: 1500000 },
-            { id: 2, date: "2026-04-02", desc: "Sumbangan Sosial (Duka)", type: "keluar", amount: 500000 }
-        ],
-        MEMORIAL: [
-            { id: 1, name: "Alm. Yusuf Lubis", years: "1945 - 2020", quote: "Kasih sayangmu akan selalu hidup dalam ingatan kami.", category: "Generasi Pertama" }
-        ],
-        KONTAK: [
-            { id: 1, name: "Bpk. Yusuf", role: "Ketua Arisan", phone: "08123456789" },
-            { id: 2, name: "Ibu Siti", role: "Bendahara", phone: "08987654321" }
-        ]
-    },
-
-    getData(key) {
-        const data = localStorage.getItem(key);
-        if (!data) {
-            const defaultKey = Object.keys(this.KEYS).find(k => this.KEYS[k] === key);
-            this.saveData(key, this.DEFAULTS[defaultKey]);
-            return this.DEFAULTS[defaultKey];
+    async getAllData(tableName) {
+        const { data, error } = await supabase
+            .from(tableName)
+            .select('*')
+            .order('created_at', { ascending: false });
+        
+        if (error) {
+            console.error(`Error fetching ${tableName}:`, error);
+            return [];
         }
-        return JSON.parse(data);
+        return data;
     },
 
-    saveData(key, data) {
-        localStorage.setItem(key, JSON.stringify(data));
+    async addItem(tableName, item) {
+        // Map frontend fields to DB fields if necessary
+        if (tableName === this.TABLES.KEUANGAN && item.desc) {
+            item.description = item.desc;
+            delete item.desc;
+        }
+
+        const { data, error } = await supabase
+            .from(tableName)
+            .insert([item])
+            .select();
+        
+        if (error) {
+            console.error(`Error adding to ${tableName}:`, error);
+            return null;
+        }
+        return data[0];
     },
 
-    addItem(key, item) {
-        const data = this.getData(key);
-        item.id = Date.now();
-        data.push(item);
-        this.saveData(key, data);
-        return item;
+    async deleteItem(tableName, id) {
+        const { error } = await supabase
+            .from(tableName)
+            .delete()
+            .eq('id', id);
+        
+        if (error) {
+            console.error(`Error deleting from ${tableName}:`, error);
+            return false;
+        }
+        return true;
     },
 
-    deleteItem(key, id) {
-        let data = this.getData(key);
-        data = data.filter(item => item.id !== id);
-        this.saveData(key, data);
+    // Legacy support for getData (mapped to Supabase now)
+    // Note: Since Supabase is async, pages will need minor updates to use await
+    KEYS: {
+        KEGIATAN: 'kegiatan',
+        KEUANGAN: 'keuangan',
+        MEMORIAL: 'memorial',
+        KONTAK: 'kontak'
     }
 };
 

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="security.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="data_manager.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,12 +30,15 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 24px; margin-right: 20px;
         }
+        .contact-info h6 { margin: 0; font-weight: 700; color: #333; }
+        .contact-info p { margin: 0; font-size: 0.85rem; color: #777; }
         .btn-call {
             margin-left: auto; width: 40px; height: 40px; border-radius: 12px;
             background: #f0f7f0; color: var(--primary);
             display: flex; align-items: center; justify-content: center;
-            text-decoration: none;
+            text-decoration: none; transition: all 0.2s;
         }
+        .btn-call:hover { background: var(--primary); color: white; }
         .admin-controls { display: none; }
         .delete-btn { color: #dc3545; cursor: pointer; margin-left: 15px; display: none; }
     </style>
@@ -45,10 +49,13 @@
             <h1 class="display-5 fw-bold mb-2">📞 Kontak Pengurus</h1>
             <p class="lead opacity-75">Hubungi kami untuk informasi seputar kegiatan keluarga</p>
             <div class="d-flex justify-content-center gap-2 mt-4">
-                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                <a href="index.html" class="btn btn-outline-light rounded-pill px-4">← Beranda</a>
                 <button class="btn btn-light rounded-pill px-4 admin-controls" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="bi bi-plus-lg me-1"></i> Tambah Kontak
                 </button>
+                <a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()">
+                    <i class="bi bi-box-arrow-left me-1"></i> Logout
+                </a>
             </div>
         </div>
     </header>
@@ -56,7 +63,7 @@
     <main class="container py-5">
         <div class="row justify-content-center">
             <div id="contactList" class="col-md-7">
-                <!-- Data loaded by JS -->
+                <div class="text-center py-5"><div class="spinner-border text-success"></div></div>
             </div>
         </div>
     </main>
@@ -83,7 +90,7 @@
                             <label class="form-label small fw-bold">Nomor WhatsApp/Email</label>
                             <input type="text" id="phone" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Kontak</button>
+                        <button type="submit" id="saveBtn" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Kontak</button>
                     </form>
                 </div>
             </div>
@@ -96,10 +103,15 @@
             document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'block');
         }
 
-        function renderData() {
-            const data = DataManager.getData(DataManager.KEYS.KONTAK);
+        async function renderData() {
+            const data = await DataManager.getAllData(DataManager.TABLES.KONTAK);
             const list = document.getElementById('contactList');
             list.innerHTML = '';
+
+            if (data.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-5">Belum ada kontak pengurus.</p>';
+                return;
+            }
 
             data.forEach(item => {
                 list.innerHTML += `
@@ -110,7 +122,7 @@
                             <p class="text-muted small m-0">${item.role}</p>
                         </div>
                         <div class="d-flex align-items-center ms-auto">
-                            <a href="https://wa.me/${item.phone}" target="_blank" class="btn-call"><i class="bi bi-whatsapp"></i></a><a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()"><i class="bi bi-box-arrow-left me-1"></i> Logout</a>
+                            <a href="https://wa.me/${item.phone}" target="_blank" class="btn-call"><i class="bi bi-whatsapp"></i></a>
                             ${window.isAdmin() ? `<i class="bi bi-trash delete-btn" style="display:block" onclick="deleteItem(${item.id})"></i>` : ''}
                         </div>
                     </div>
@@ -118,22 +130,30 @@
             });
         }
 
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...';
+
             const newItem = {
                 name: document.getElementById('name').value,
                 role: document.getElementById('role').value,
                 phone: document.getElementById('phone').value
             };
-            DataManager.addItem(DataManager.KEYS.KONTAK, newItem);
+            
+            await DataManager.addItem(DataManager.TABLES.KONTAK, newItem);
+            
             bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = 'Simpan Kontak';
             this.reset();
             renderData();
         });
 
-        window.deleteItem = function(id) {
-            if (confirm('Hapus kontak ini?')) {
-                DataManager.deleteItem(DataManager.KEYS.KONTAK, id);
+        window.deleteItem = async function(id) {
+            if (confirm('Hapus kontak ini secara permanen?')) {
+                await DataManager.deleteItem(DataManager.TABLES.KONTAK, id);
                 renderData();
             }
         }
