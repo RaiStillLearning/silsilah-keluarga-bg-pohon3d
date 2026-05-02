@@ -291,7 +291,7 @@
 
                     // Final Redirect after progress bar fills
                     setTimeout(() => {
-                        window.location.href = localStorage.getItem("redirect_after_login") || "index.html";
+                        window.location.href = localStorage.getItem("redirect_after_login") || "/home";
                         localStorage.removeItem("redirect_after_login");
                     }, 2200);
                 } else {

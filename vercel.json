@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/home", "destination": "/index.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/kegiatan", "destination": "/kegiatan.html" },
+    { "source": "/keuangan", "destination": "/keuangan.html" },
+    { "source": "/memorial", "destination": "/memorial.html" },
+    { "source": "/kontak", "destination": "/kontak.html" }
+  ]
+}

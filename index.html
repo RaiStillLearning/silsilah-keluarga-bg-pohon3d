@@ -4,7 +4,7 @@
 		<script>
 			// Pengalihan Instan
 			if (localStorage.getItem("family_tree_auth") !== "true") {
-				window.location.replace("login.html");
+				window.location.replace("/login");
 			}
 		</script>
 		<script src="security.js"></script>
@@ -250,10 +250,10 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ms-auto">
-						<li class="nav-item"><a class="nav-link" href="kegiatan.html">Kegiatan</a></li>
-						<li class="nav-item"><a class="nav-link" href="keuangan.html">Laporan Keuangan</a></li>
-						<li class="nav-item"><a class="nav-link" href="memorial.html">In Memoriam</a></li>
-						<li class="nav-item"><a class="nav-link" href="kontak.html">Kontak Pengurus</a></li>
+						<li class="nav-item"><a class="nav-link" href="/kegiatan">Kegiatan</a></li>
+						<li class="nav-item"><a class="nav-link" href="/keuangan">Laporan Keuangan</a></li>
+						<li class="nav-item"><a class="nav-link" href="/memorial">In Memoriam</a></li>
+						<li class="nav-item"><a class="nav-link" href="/kontak">Kontak Pengurus</a></li>
 					</ul>
 				</div>
 			</div>
@@ -275,10 +275,10 @@
 				</div>
 				<div class="offcanvas-body">
 					<nav class="nav flex-column">
-						<a class="sidebar-link" href="kegiatan.html">📅 Kegiatan</a>
-						<a class="sidebar-link" href="keuangan.html">💰 Laporan Keuangan</a>
-						<a class="sidebar-link" href="memorial.html">🕯️ In Memoriam</a>
-						<a class="sidebar-link" href="kontak.html">📞 Kontak Pengurus</a>
+						<a class="sidebar-link" href="/kegiatan">📅 Kegiatan</a>
+						<a class="sidebar-link" href="/keuangan">💰 Laporan Keuangan</a>
+						<a class="sidebar-link" href="/memorial">🕯️ In Memoriam</a>
+						<a class="sidebar-link" href="/kontak">📞 Kontak Pengurus</a>
 						<hr>
 						<button class="btn btn-outline-secondary w-100 mt-3" id="d3-back-btn-new">← Kembali ke 3D Tree</button>
 						<a class="sidebar-link text-danger mt-auto" href="#" onclick="logoutFamily()"><i class="bi bi-box-arrow-right"></i> Logout</a>
