@@ -30,7 +30,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('assets/login-bg.jpg');
+            background-image: url('/assets/login-bg.jpg');
             background-size: cover;
             background-position: center;
             filter: brightness(0.9);
@@ -291,13 +291,11 @@
 
                     // Final Redirect after progress bar fills
                     setTimeout(() => {
-                        window.location.href = localStorage.getItem("redirect_after_login") || "/home";
+                        let target = localStorage.getItem("redirect_after_login") || "/home";
+                        target = target.replace(".html", "");
+                        window.location.href = target;
                         localStorage.removeItem("redirect_after_login");
                     }, 2200);
-                } else {
-                    loginSpinner.style.display = 'none';
-                    loginBtn.disabled = false;
-                    errorAlert.style.display = 'block';
                     // Shake effect
                     document.querySelector('.login-card').animate([
                         { transform: 'translateX(0)' },
