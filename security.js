@@ -72,7 +72,7 @@
             localStorage.setItem(AUTH_KEY, "true");
             localStorage.setItem(ROLE_KEY, role);
             if (!skipRedirect) {
-                const redirect = localStorage.getItem("redirect_after_login") || "/home";
+                const redirect = localStorage.getItem("redirect_after_login") || "/";
                 localStorage.removeItem("redirect_after_login");
                 window.location.replace(redirect);
             }

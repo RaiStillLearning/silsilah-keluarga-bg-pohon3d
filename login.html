@@ -273,39 +273,36 @@
             const username = document.getElementById('username').value;
             const password = passwordInput.value;
 
-            // Reset UI
             errorAlert.style.display = 'none';
             loginBtn.disabled = true;
             loginSpinner.style.display = 'inline-block';
 
-            // Simulate small delay for premium feel
             setTimeout(async () => {
-                const success = await window.verifyFamilyLogin(username, password, true); // Added 'true' to skip immediate redirect
+                const success = await window.verifyFamilyLogin(username, password, true);
                 
                 if (success) {
-                    // Success Transition
                     document.getElementById('entryOverlay').style.display = 'flex';
                     setTimeout(() => {
                         document.getElementById('loaderProgress').style.width = '100%';
                     }, 50);
 
-                    // Final Redirect after progress bar fills
                     setTimeout(() => {
-                        let target = localStorage.getItem("redirect_after_login") || "/home";
+                        let target = localStorage.getItem("redirect_after_login") || "/";
                         target = target.replace(".html", "");
                         window.location.href = target;
                         localStorage.removeItem("redirect_after_login");
                     }, 2200);
-                    // Shake effect
+                } else {
+                    loginSpinner.style.display = 'none';
+                    loginBtn.disabled = false;
+                    errorAlert.style.display = 'block';
                     document.querySelector('.login-card').animate([
                         { transform: 'translateX(0)' },
                         { transform: 'translateX(-10px)' },
                         { transform: 'translateX(10px)' },
                         { transform: 'translateX(0)' }
-                    ], { duration: 300 });
+                    ], { duration: 300, iterations: 2 });
                 }
             }, 800);
         });
-    </script>
-</body>
 </html>
