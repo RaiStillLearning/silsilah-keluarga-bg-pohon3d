@@ -243,7 +243,7 @@
 	</head>
 	<body>
 		<!-- Top Navbar (Home View) -->
-		<nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-custom" id="top-navbar">
+		<nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom" id="top-navbar" style="background: #2e7d32; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
 			<div class="container">
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
 					<span class="navbar-toggler-icon"></span>
@@ -295,7 +295,6 @@
 		</div>
 
 		<!-- Modals -->
-		</div>
 
 		<!-- 📦 This import map tells the browser where to find the Three.js library and its addons. -->
 		<script type="importmap">
@@ -1163,8 +1162,7 @@
 						.onComplete(() => {
 							document.getElementById('webgl-container').classList.add('hidden');
 							document.getElementById('d3-overlay').classList.add('active');
-							// Hide Top Navbar
-							document.getElementById('top-navbar').classList.add('hidden');
+							// Keep Top Navbar visible
 							renderD3Tree(rootData || coupleData, coupleData);
 							isGlobalTransitioning = false;
 						})
@@ -1177,12 +1175,12 @@
 			// --- Setup Family Dataset ---
 			const sharedGenerations = [
 				{
-					husband: { name: "Mulia", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" },
-					wife: { name: "Abdurahman bin Muhammad Nazi", avatar: "/assets/male.svg", birth: "-", location: "Surabaya" },
+					husband: { name: "Abdurahman bin Muhammad Nazi", avatar: "/assets/male.svg", birth: "-", location: "Surabaya" },
+					wife: { name: "Mulia", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" },
 					children: [
 						{
-							husband: { name: "Hikmah", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" },
-							wife: { name: "Iskandar", avatar: "/assets/male.svg", birth: "-", location: "Surabaya" }
+							husband: { name: "Iskandar", avatar: "/assets/male.svg", birth: "-", location: "Surabaya" },
+							wife: { name: "Hikmah", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" }
 						},
 						{
 							husband: { name: "Ruswanto", avatar: "/assets/male.svg", birth: "25 Maret 1958", location: "Surabaya" },
@@ -1205,8 +1203,8 @@
 							]
 						},
 						{
-							husband: { name: "Maryani", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" },
-							wife: { name: "Hari", avatar: "/assets/male.svg", birth: "-", location: "Surabaya" }
+							husband: { name: "Hari", avatar: "/assets/male.svg", birth: "-", location: "Surabaya" },
+							wife: { name: "Maryani", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" }
 						},
 						{
 							husband: { name: "Mulyadi", avatar: "/assets/male.svg", birth: "29 Juli 1965", location: "Surabaya" }
@@ -1216,7 +1214,7 @@
 							wife: { name: "Ade", avatar: "/assets/female.svg", birth: "-", location: "Surabaya" }
 						},
 						{
-							husband: { name: "Erni", avatar: "/assets/female.svg", birth: "09 April 1973", location: "Surabaya" }
+							wife: { name: "Erni", avatar: "/assets/female.svg", birth: "09 April 1973", location: "Surabaya" }
 						}
 					]
 				},
@@ -1367,8 +1365,8 @@
 					]
 				},
 				{
-					husband: { name: "Siti Atiyah", avatar: "/assets/female.svg", birth: "-", location: "Jakarta" },
-					wife: { name: "Jimmy Wachman", avatar: "/assets/male.svg", birth: "5 Januari 1940, Wafat: 20 maret 1989", location: "Jakarta" },
+					husband: { name: "Jimmy Wachman", avatar: "/assets/male.svg", birth: "5 Januari 1940, Wafat: 20 maret 1989", location: "Jakarta" },
+					wife: { name: "Siti Atiyah", avatar: "/assets/female.svg", birth: "-", location: "Jakarta" },
 					children: [
 						{
 							husband: { name: "Maryani", avatar: "/assets/female.svg", birth: "-", location: "Jakarta" },
@@ -1440,7 +1438,7 @@
 				wife: { name: "Fulan", avatar: "/assets/female.svg", birth: "-", location: "Medan" },
 				children: [
 					{
-						wife: { name: "Ramli", avatar: "/assets/male.svg", birth: "Wafat: 10 November 1987", location: "Batam" },
+						husband: { name: "Ramli", avatar: "/assets/male.svg", birth: "Wafat: 10 November 1987", location: "Batam" },
 						children: sharedGenerations
 					}
 				]
