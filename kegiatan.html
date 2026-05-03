@@ -46,6 +46,8 @@
         .action-btns i { cursor: pointer; margin-left: 15px; font-size: 1.1rem; transition: color 0.2s; }
         .edit-btn:hover { color: #ffc107; }
         .delete-btn:hover { color: #dc3545; }
+        .folder-card:hover { transform: translateY(-5px); background: #fffde7; }
+        .extra-small { font-size: 0.75rem; }
     </style>
 </head>
 <body>
@@ -86,30 +88,7 @@
         </div>
     </header>
 
-    <main class="container mb-5">
-        <!-- New: Arsip Dokumentasi Section -->
-        <section class="mb-5">
-            <h4 class="section-title">Arsip Dokumentasi</h4>
-            <div class="card border-0 shadow-sm" style="border-radius: 24px; background: linear-gradient(135deg, #f1f8e9 0%, #ffffff 100%); border-left: 5px solid #2e7d32 !important;">
-                <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
-                    <div class="d-flex align-items-center">
-                        <div class="icon-box bg-white shadow-sm" style="width: 60px; height: 60px; font-size: 28px;">
-                            <i class="bi bi-folder-fill text-warning"></i>
-                        </div>
-                        <div>
-                            <h5 class="fw-bold mb-1">Dokumentasi Kegiatan 2016</h5>
-                            <p class="text-muted small mb-0">Kumpulan foto dan momen kebersamaan keluarga sepanjang tahun 2016.</p>
-                        </div>
-                    </div>
-                    <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw" 
-                       target="_blank" class="btn btn-success rounded-pill px-4 py-2 shadow-sm fw-bold">
-                        <i class="bi bi-google-drive me-2"></i>Buka Album Foto
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <div class="row g-4">
+        <div class="row g-4 mb-5">
             <div class="col-md-6">
                 <h4 class="section-title">Kegiatan Mendatang</h4>
                 <div id="upcomingList" class="list-group">
@@ -123,6 +102,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- Arsip Dokumentasi Section (Moved Below) -->
+        <section class="mt-5">
+            <h4 class="section-title">📂 Arsip Dokumentasi Foto</h4>
+            <p class="text-muted small mb-4">Klik pada folder tahun untuk melihat dokumentasi lengkap di Google Drive.</p>
+            <div class="row g-3">
+                <!-- Folder 2016 -->
+                <div class="col-md-4 col-sm-6">
+                    <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw" 
+                       target="_blank" class="text-decoration-none">
+                        <div class="card border-0 shadow-sm h-100 folder-card" style="border-radius: 18px; transition: transform 0.2s;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="icon-box bg-warning bg-opacity-10 text-warning mb-0 me-3" style="width: 45px; height: 45px; font-size: 20px;">
+                                    <i class="bi bi-folder-fill"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark">Album Foto 2016</h6>
+                                    <span class="text-muted extra-small" style="font-size: 11px;">Google Drive Archive</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Future folders can be added here -->
+            </div>
+        </section>
     </main>
 
     <!-- Modal Form (Add & Edit) -->
