@@ -211,6 +211,35 @@
                 if (item.type === 'upcoming') upcomingList.innerHTML += html;
                 else historyList.innerHTML += html;
             });
+
+            // Add Featured 2016 Activity (Manual entry for historical documentation)
+            const featuredHtml = `
+                <div class="list-group-item flex-column align-items-start p-4 mb-4" style="background: linear-gradient(to right, #f1f8e9, #ffffff); border-left: 5px solid var(--primary-color) !important;">
+                    <div class="d-flex w-100 justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box shadow-sm" style="background: var(--primary-color); color: white;"><i class="bi bi-stars"></i></div>
+                            <div>
+                                <h5 class="mb-1 fw-bold">Kegiatan Keluarga 2016 - Villa Navina Puncak</h5>
+                                <p class="text-muted small mb-0">Desember 2016 • Villa Navina, Puncak, Bogor</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-secondary small mb-3">Momen indah kebersamaan keluarga besar di Puncak. Menikmati udara segar dan mempererat tali silaturahmi seluruh anggota keluarga.</p>
+                    <div class="row g-2 mb-3">
+                        <div class="col-4"><img src="/images/2016 villa navina puncak/image.png" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src)"></div>
+                        <div class="col-4"><img src="/images/2016 villa navina puncak/image copy.png" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src)"></div>
+                        <div class="col-4"><img src="/images/2016 villa navina puncak/image copy 2.png" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src)"></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw" 
+                           target="_blank" class="btn btn-success btn-sm rounded-pill px-4 fw-bold">
+                            <i class="bi bi-google-drive me-2"></i>Selengkapnya di Google Drive
+                        </a>
+                        <span class="badge bg-warning text-dark rounded-pill px-3">Featured 2016</span>
+                    </div>
+                </div>
+            `;
+            historyList.innerHTML = featuredHtml + historyList.innerHTML;
         }
 
         window.openAddModal = () => {
