@@ -11,39 +11,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        :root { --primary-color: #1b5e20; }
-        body { font-family: 'Inter', sans-serif; background: #f4f7f6; color: #333; }
+        :root { --primary-color: #2e7d32; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #333; }
+        
+        .navbar-custom { background: var(--primary-color); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
         .hero-section { 
             background: linear-gradient(rgba(27, 94, 32, 0.85), rgba(46, 125, 50, 0.9)), url('/assets/login-bg.jpg'); 
             background-size: cover; background-position: center;
-            color: white; padding: 70px 0; margin-bottom: 40px;
+            color: white; padding: 60px 0; margin-bottom: 30px;
         }
         .card-stat { 
-            border: none; border-radius: 24px; padding: 25px;
-            background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+            border: none; border-radius: 20px; padding: 20px;
+            background: white; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
         }
+        .card-stat:hover { transform: translateY(-5px); }
         .table-container { 
-            background: white; border-radius: 24px; padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
         }
         .badge-income { background: rgba(46, 125, 50, 0.1); color: #2e7d32; border-radius: 8px; padding: 6px 12px; }
         .badge-expense { background: rgba(211, 47, 47, 0.1); color: #d32f2f; border-radius: 8px; padding: 6px 12px; }
         .admin-controls { display: none; }
+        .action-btns i { cursor: pointer; margin-left: 10px; font-size: 1.1rem; }
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top navbar-custom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#" onclick="navTo('Lw=='); return false;">
+                <i class="bi bi-tree-fill me-2"></i>Silsilah Keluarga
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L2tlZ2lhdGFu'); return false;">Kegiatan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L2tldWFuZ2Fu'); return false;">Keuangan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L21lbW9yaWFs'); return false;">In Memoriam</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L2tvbnRhay'); return false;">Kontak</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-outline-light rounded-pill px-4" href="#" onclick="logoutFamily()">
+                            <i class="bi bi-box-arrow-right me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <header class="hero-section text-center">
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">💰 Keuangan Keluarga</h1>
             <p class="lead opacity-75">Transparansi dana untuk kesejahteraan bersama</p>
-            <div class="d-flex justify-content-center gap-2 mt-4">
-                <a href="#" onclick="navTo('Lw=='); return false;" class="btn btn-outline-light rounded-pill px-4">← Beranda</a>
-                <button id="addBtn" class="btn btn-light rounded-pill px-4 admin-controls" data-bs-toggle="modal" data-bs-target="#addModal">
-                    <i class="bi bi-plus-lg me-1"></i> Tambah Transaksi
+            <div class="admin-controls mt-4">
+                <button onclick="openAddModal()" class="btn btn-light rounded-pill px-5 py-2 fw-bold shadow-sm">
+                    <i class="bi bi-plus-lg me-2"></i>Tambah Transaksi
                 </button>
-                <a href="#" class="btn btn-outline-danger rounded-pill px-4 ms-2" onclick="logoutFamily()">
-                    <i class="bi bi-box-arrow-left me-1"></i> Logout
-                </a>
             </div>
         </div>
     </header>
@@ -53,19 +79,19 @@
             <div class="col-md-4">
                 <div class="card-stat">
                     <div class="small text-muted mb-1">Saldo Kas Utama</div>
-                    <h2 id="totalSaldo" class="fw-bold m-0">Rp 0</h2>
+                    <h2 id="totalSaldo" class="fw-bold m-0 text-primary">Rp 0</h2>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card-stat text-success">
-                    <div class="small text-muted mb-1 text-success">Total Pemasukan</div>
-                    <h2 id="totalMasuk" class="fw-bold m-0">Rp 0</h2>
+                <div class="card-stat">
+                    <div class="small text-muted mb-1">Total Pemasukan</div>
+                    <h2 id="totalMasuk" class="fw-bold m-0 text-success">Rp 0</h2>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card-stat text-danger">
-                    <div class="small text-muted mb-1 text-danger">Total Pengeluaran</div>
-                    <h2 id="totalKeluar" class="fw-bold m-0">Rp 0</h2>
+                <div class="card-stat">
+                    <div class="small text-muted mb-1">Total Pengeluaran</div>
+                    <h2 id="totalKeluar" class="fw-bold m-0 text-danger">Rp 0</h2>
                 </div>
             </div>
         </div>
@@ -73,14 +99,14 @@
         <div class="table-container">
             <h4 class="fw-bold mb-4">Riwayat Transaksi</h4>
             <div class="table-responsive">
-                <table class="table align-middle">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
                             <th>Keterangan</th>
                             <th>Status</th>
                             <th class="text-end">Jumlah</th>
-                            <th class="admin-controls"></th>
+                            <th class="admin-controls text-end">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="keuanganList">
@@ -91,19 +117,20 @@
         </div>
     </main>
 
-    <!-- Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1">
+    <!-- Modal (Add & Edit) -->
+    <div class="modal fade" id="dataModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow" style="border-radius: 20px;">
                 <div class="modal-header border-0">
-                    <h5 class="fw-bold">Tambah Transaksi</h5>
+                    <h5 class="fw-bold" id="modalTitle">Tambah Transaksi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     <form id="keuanganForm">
+                        <input type="hidden" id="editId">
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Keterangan</label>
-                            <input type="text" id="desc" class="form-control" required>
+                            <input type="text" id="desc" class="form-control" required placeholder="Contoh: Iuran Bulanan">
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Tanggal</label>
@@ -111,16 +138,16 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Jumlah (Rp)</label>
-                            <input type="number" id="amount" class="form-control" required>
+                            <input type="number" id="amount" class="form-control" required placeholder="0">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label small fw-bold">Tipe</label>
                             <select id="type" class="form-select">
                                 <option value="masuk">Masuk</option>
                                 <option value="keluar">Keluar</option>
                             </select>
                         </div>
-                        <button type="submit" id="saveBtn" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Transaksi</button>
+                        <button type="submit" id="saveBtn" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 12px;">Simpan Perubahan</button>
                     </form>
                 </div>
             </div>
@@ -129,6 +156,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let allData = [];
+        const modal = new bootstrap.Modal(document.getElementById('dataModal'));
+
         if (window.isAdmin()) {
             document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'block');
         }
@@ -138,17 +168,17 @@
         }
 
         async function renderData() {
-            const data = await DataManager.getAllData(DataManager.TABLES.KEUANGAN);
+            allData = await DataManager.getAllData(DataManager.TABLES.KEUANGAN);
             const list = document.getElementById('keuanganList');
             let totalMasuk = 0, totalKeluar = 0;
 
             list.innerHTML = '';
             
-            if (data.length === 0) {
+            if (allData.length === 0) {
                 list.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Belum ada transaksi.</td></tr>';
             }
 
-            data.forEach(item => {
+            allData.forEach(item => {
                 const amount = parseInt(item.amount);
                 if (item.type === 'masuk') totalMasuk += amount;
                 else totalKeluar += amount;
@@ -156,12 +186,13 @@
                 list.innerHTML += `
                     <tr>
                         <td class="text-muted small">${item.date}</td>
-                        <td class="fw-semibold">${item.description || item.desc}</td>
+                        <td class="fw-semibold">${item.desc}</td>
                         <td><span class="${item.type === 'masuk' ? 'badge-income' : 'badge-expense'} fw-bold small">${item.type.toUpperCase()}</span></td>
                         <td class="text-end ${item.type === 'masuk' ? 'text-success' : 'text-danger'} fw-bold">
                             ${item.type === 'masuk' ? '+' : '-'} ${formatIDR(amount)}
                         </td>
                         <td class="admin-controls text-end">
+                            <i class="bi bi-pencil-square text-warning me-2" style="cursor:pointer" onclick="openEditModal(${item.id})"></i>
                             <i class="bi bi-trash text-danger" style="cursor:pointer" onclick="deleteItem(${item.id})"></i>
                         </td>
                     </tr>
@@ -172,30 +203,54 @@
             document.getElementById('totalKeluar').innerText = formatIDR(totalKeluar);
             document.getElementById('totalSaldo').innerText = formatIDR(totalMasuk - totalKeluar);
             
-            if (!window.isAdmin()) {
-                document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'none');
+            if (window.isAdmin()) {
+                document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'table-cell');
             }
         }
+
+        window.openAddModal = () => {
+            document.getElementById('modalTitle').innerText = 'Tambah Transaksi';
+            document.getElementById('editId').value = '';
+            document.getElementById('keuanganForm').reset();
+            modal.show();
+        };
+
+        window.openEditModal = (id) => {
+            const item = allData.find(d => d.id === id);
+            if (!item) return;
+            document.getElementById('modalTitle').innerText = 'Edit Transaksi';
+            document.getElementById('editId').value = item.id;
+            document.getElementById('desc').value = item.desc;
+            document.getElementById('date').value = item.date;
+            document.getElementById('amount').value = item.amount;
+            document.getElementById('type').value = item.type;
+            modal.show();
+        };
 
         document.getElementById('keuanganForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
+            const editId = document.getElementById('editId').value;
+            
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menyimpan...';
 
-            const newItem = {
+            const payload = {
                 desc: document.getElementById('desc').value,
                 date: document.getElementById('date').value,
                 amount: document.getElementById('amount').value,
                 type: document.getElementById('type').value
             };
             
-            await DataManager.addItem(DataManager.TABLES.KEUANGAN, newItem);
+            if (editId) {
+                await DataManager.updateItem(DataManager.TABLES.KEUANGAN, editId, payload);
+            } else {
+                await DataManager.addItem(DataManager.TABLES.KEUANGAN, payload);
+            }
             
-            bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+            modal.hide();
             saveBtn.disabled = false;
-            saveBtn.innerHTML = 'Simpan Transaksi';
-            this.reset();
+            saveBtn.innerHTML = 'Simpan Perubahan';
             renderData();
         });
 
