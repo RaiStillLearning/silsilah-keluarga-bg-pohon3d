@@ -1073,6 +1073,8 @@
 			document.getElementById('d3-back-btn').addEventListener('click', () => {
 				document.getElementById('d3-overlay').classList.remove('active');
 				document.getElementById('webgl-container').classList.remove('hidden');
+				// Show Top Navbar again
+				document.getElementById('top-navbar').classList.remove('hidden');
 
 				// Clear D3 layout after transition to prevent overlapping elements later
 				setTimeout(() => {
@@ -1165,7 +1167,8 @@
 						.onComplete(() => {
 							document.getElementById('webgl-container').classList.add('hidden');
 							document.getElementById('d3-overlay').classList.add('active');
-							// Keep Top Navbar visible
+							// Hide Top Navbar in Family Portal mode
+							document.getElementById('top-navbar').classList.add('hidden');
 							renderD3Tree(rootData || coupleData, coupleData);
 							isGlobalTransitioning = false;
 						})
