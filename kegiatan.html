@@ -98,36 +98,67 @@
             <div class="col-md-6">
                 <h4 class="section-title text-muted">Riwayat Kegiatan</h4>
                 <div id="historyList" class="list-group">
-                    <div class="text-center py-4"><div class="spinner-border text-muted" role="status"></div></div>
+
+                    <!-- ✅ Kartu Statis: Album Foto 2016 Villa Navina Puncak -->
+                    <div class="list-group-item flex-column align-items-start p-0 overflow-hidden mb-3" style="border-radius: 18px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                        <!-- Header Kartu -->
+                        <div class="d-flex align-items-center p-3" style="background: linear-gradient(135deg, #2e7d32, #66bb6a);">
+                            <div class="icon-box shadow-sm me-3" style="background: rgba(255,255,255,0.2); color: white; width: 46px; height: 46px; font-size: 20px; flex-shrink: 0;">
+                                <i class="bi bi-camera-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Villa Navina Puncak</h6>
+                                <span class="text-white opacity-75" style="font-size: 12px;">Desember 2016 • Puncak, Bogor</span>
+                            </div>
+                            <span class="badge bg-warning text-dark ms-auto rounded-pill">2016</span>
+                        </div>
+                        <!-- Galeri Foto (Grid 3 kolom) -->
+                        <div class="row g-1 p-2">
+                            <div class="col-4">
+                                <img src="/images/2016 villa navina puncak/image.png"
+                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" 
+                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+                            </div>
+                            <div class="col-4">
+                                <img src="/images/2016 villa navina puncak/image copy.png"
+                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
+                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+                            </div>
+                            <div class="col-4">
+                                <img src="/images/2016 villa navina puncak/image copy 2.png"
+                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
+                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+                            </div>
+                            <div class="col-4">
+                                <img src="/images/2016 villa navina puncak/image copy 3.png"
+                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
+                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+                            </div>
+                            <div class="col-4">
+                                <img src="/images/2016 villa navina puncak/image copy 4.png"
+                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
+                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+                            </div>
+                            <div class="col-4">
+                                <img src="/images/2016 villa navina puncak/image copy 5.png"
+                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
+                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+                            </div>
+                        </div>
+                        <!-- Footer Kartu -->
+                        <div class="px-3 pb-3">
+                            <p class="text-muted small mb-2">Momen kebersamaan keluarga besar di Puncak — udara segar dan tali silaturahmi yang semakin erat. 🌿</p>
+                            <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw"
+                               target="_blank" class="btn btn-success btn-sm rounded-pill px-4 fw-bold w-100">
+                                <i class="bi bi-google-drive me-2"></i>Selengkapnya di Google Drive
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /Kartu Statis -->
+
                 </div>
             </div>
         </div>
-
-        <!-- Arsip Dokumentasi Section (Moved Below) -->
-        <section class="mt-5">
-            <h4 class="section-title">📂 Arsip Dokumentasi Foto</h4>
-            <p class="text-muted small mb-4">Klik pada folder tahun untuk melihat dokumentasi lengkap di Google Drive.</p>
-            <div class="row g-3">
-                <!-- Folder 2016 -->
-                <div class="col-md-4 col-sm-6">
-                    <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw" 
-                       target="_blank" class="text-decoration-none">
-                        <div class="card border-0 shadow-sm h-100 folder-card" style="border-radius: 18px; transition: transform 0.2s;">
-                            <div class="card-body p-3 d-flex align-items-center">
-                                <div class="icon-box bg-warning bg-opacity-10 text-warning mb-0 me-3" style="width: 45px; height: 45px; font-size: 20px;">
-                                    <i class="bi bi-folder-fill"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0 text-dark">Album Foto 2016</h6>
-                                    <span class="text-muted extra-small" style="font-size: 11px;">Google Drive Archive</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <!-- Future folders can be added here -->
-            </div>
-        </section>
     </main>
 
     <!-- Modal Form (Add & Edit) -->
@@ -212,34 +243,7 @@
                 else historyList.innerHTML += html;
             });
 
-            // Add Featured 2016 Activity (Manual entry for historical documentation)
-            const featuredHtml = `
-                <div class="list-group-item flex-column align-items-start p-4 mb-4" style="background: linear-gradient(to right, #f1f8e9, #ffffff); border-left: 5px solid var(--primary-color) !important;">
-                    <div class="d-flex w-100 justify-content-between align-items-center mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="icon-box shadow-sm" style="background: var(--primary-color); color: white;"><i class="bi bi-stars"></i></div>
-                            <div>
-                                <h5 class="mb-1 fw-bold">Kegiatan Keluarga 2016 - Villa Navina Puncak</h5>
-                                <p class="text-muted small mb-0">Desember 2016 • Villa Navina, Puncak, Bogor</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-secondary small mb-3">Momen indah kebersamaan keluarga besar di Puncak. Menikmati udara segar dan mempererat tali silaturahmi seluruh anggota keluarga.</p>
-                    <div class="row g-2 mb-3">
-                        <div class="col-4"><img src="/images/2016 villa navina puncak/image.png" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src)"></div>
-                        <div class="col-4"><img src="/images/2016 villa navina puncak/image copy.png" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src)"></div>
-                        <div class="col-4"><img src="/images/2016 villa navina puncak/image copy 2.png" class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src)"></div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw" 
-                           target="_blank" class="btn btn-success btn-sm rounded-pill px-4 fw-bold">
-                            <i class="bi bi-google-drive me-2"></i>Selengkapnya di Google Drive
-                        </a>
-                        <span class="badge bg-warning text-dark rounded-pill px-3">Featured 2016</span>
-                    </div>
-                </div>
-            `;
-            historyList.innerHTML = featuredHtml + historyList.innerHTML;
+            // Dynamic history items appended after the static 2016 card above
         }
 
         window.openAddModal = () => {
