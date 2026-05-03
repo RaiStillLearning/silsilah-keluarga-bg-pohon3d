@@ -97,11 +97,9 @@
             </div>
             <div class="col-md-6">
                 <h4 class="section-title text-muted">Riwayat Kegiatan</h4>
-                <div id="historyList" class="list-group">
 
-                    <!-- ✅ Kartu Statis: Album Foto 2016 Villa Navina Puncak -->
+                    <!-- ✅ Kartu Statis PERMANEN: tidak di dalam historyList agar tidak terhapus renderData() -->
                     <div class="list-group-item flex-column align-items-start p-0 overflow-hidden mb-3" style="border-radius: 18px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-                        <!-- Header Kartu -->
                         <div class="d-flex align-items-center p-3" style="background: linear-gradient(135deg, #2e7d32, #66bb6a);">
                             <div class="icon-box shadow-sm me-3" style="background: rgba(255,255,255,0.2); color: white; width: 46px; height: 46px; font-size: 20px; flex-shrink: 0;">
                                 <i class="bi bi-camera-fill"></i>
@@ -112,50 +110,26 @@
                             </div>
                             <span class="badge bg-warning text-dark ms-auto rounded-pill">2016</span>
                         </div>
-                        <!-- Galeri Foto (Grid 3 kolom) -->
                         <div class="row g-1 p-2">
-                            <div class="col-4">
-                                <img src="/images/2016 villa navina puncak/image.png"
-                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" 
-                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/2016 villa navina puncak/image copy.png"
-                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
-                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/2016 villa navina puncak/image copy 2.png"
-                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
-                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/2016 villa navina puncak/image copy 3.png"
-                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
-                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/2016 villa navina puncak/image copy 4.png"
-                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
-                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/2016 villa navina puncak/image copy 5.png"
-                                     class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;"
-                                     onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
-                            </div>
+                            <div class="col-4"><img src="/images/2016 villa navina puncak/image.png" class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1"></div>
+                            <div class="col-4"><img src="/images/2016 villa navina puncak/image copy.png" class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1"></div>
+                            <div class="col-4"><img src="/images/2016 villa navina puncak/image copy 2.png" class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1"></div>
+                            <div class="col-4"><img src="/images/2016 villa navina puncak/image copy 3.png" class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1"></div>
+                            <div class="col-4"><img src="/images/2016 villa navina puncak/image copy 4.png" class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1"></div>
+                            <div class="col-4"><img src="/images/2016 villa navina puncak/image copy 5.png" class="img-fluid rounded-3" style="height: 90px; width: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;" onclick="window.open(this.src)" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1"></div>
                         </div>
-                        <!-- Footer Kartu -->
                         <div class="px-3 pb-3">
                             <p class="text-muted small mb-2">Momen kebersamaan keluarga besar di Puncak — udara segar dan tali silaturahmi yang semakin erat. 🌿</p>
-                            <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw"
-                               target="_blank" class="btn btn-success btn-sm rounded-pill px-4 fw-bold w-100">
+                            <a href="https://drive.google.com/drive/folders/0B778hY2QLnECRkFKQ3NqWGI2c1k?resourcekey=0-7AX3BqnuetA6gTaAHR9KPw" target="_blank" class="btn btn-success btn-sm rounded-pill px-4 fw-bold w-100">
                                 <i class="bi bi-google-drive me-2"></i>Selengkapnya di Google Drive
                             </a>
                         </div>
                     </div>
                     <!-- /Kartu Statis -->
 
+                <!-- Daftar riwayat dinamis dari Supabase — di sini renderData() akan mengisi -->
+                <div id="historyList" class="list-group">
+                    <div class="text-center py-4"><div class="spinner-border text-muted" role="status"></div></div>
                 </div>
             </div>
         </div>
