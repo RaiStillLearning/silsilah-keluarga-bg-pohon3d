@@ -245,8 +245,8 @@
 		<!-- Top Navbar (Home View) -->
 		<nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-custom" id="top-navbar" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
 			<div class="container">
-				<a class="navbar-brand fw-bold" href="#" onclick="location.reload(); return false;">
-					<i class="bi bi-arrow-left-circle-fill me-2" style="color: #2e7d32;"></i>Back to 3D Tree
+				<a class="navbar-brand fw-bold text-dark" href="#" style="pointer-events: none; cursor: default;">
+					<i class="bi bi-tree-fill me-2" style="color: #2e7d32;"></i>Silsilah Keluarga
 				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
 					<span class="navbar-toggler-icon"></span>
@@ -271,7 +271,7 @@
 			</button>
 
 			<!-- Sidebar (D3 Overlay) -->
-			<div class="offcanvas offcanvas-start show offcanvas-custom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="d3-sidebar" style="width: 280px; z-index: 1001;">
+			<div class="offcanvas offcanvas-start offcanvas-custom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="d3-sidebar" style="width: 280px; z-index: 1001;">
 				<div class="offcanvas-header border-bottom">
 					<h5 class="offcanvas-title fw-bold text-success">Menu Silsilah</h5>
 					<button type="button" class="btn-close" id="d3-sidebar-close"></button>
@@ -294,7 +294,7 @@
 				<button class="d3-btn" id="d3-up-btn">↑ Previous Generation</button>
 				<button class="d3-btn" id="d3-open-mulia-btn" style="display:none; background: #e8f5e9; border-color: #81c784; color: #2e7d32;">Buka Tab Keluarga Mulia </button>
 			</div>
-			<div id="d3-container" style="margin-left: 280px;"></div>
+			<div id="d3-container" style="margin-left: 0;"></div>
 		</div>
 
 		<!-- Modals -->
@@ -1018,6 +1018,24 @@
 
 			function clickNode(event, d) {
 				activeNode = d;
+
+				// Collapse all siblings — hanya biarkan jalur ke node yang diklik
+				function collapseAll(node) {
+					if (node.children) {
+						node._children = node.children;
+						node._children.forEach(collapseAll);
+						node.children = null;
+					}
+				}
+
+				// Expand clicked node, collapse semua sibling di setiap level
+				if (d.parent) {
+					d.parent.children && d.parent.children.forEach(sibling => {
+						if (sibling !== d) collapseAll(sibling);
+					});
+				}
+
+				// Toggle expand/collapse node yang diklik
 				if (d.children) {
 					d._children = d.children;
 					d.children = null;
@@ -1169,6 +1187,11 @@
 							document.getElementById('d3-overlay').classList.add('active');
 							// Hide Top Navbar in Family Portal mode
 							document.getElementById('top-navbar').classList.add('hidden');
+							// Sidebar minimized by default when entering portal
+							const sidebarEl2 = document.getElementById('d3-sidebar');
+							if (sidebarEl2 && bootstrap.Offcanvas.getInstance(sidebarEl2)) {
+								bootstrap.Offcanvas.getInstance(sidebarEl2).hide();
+							}
 							renderD3Tree(rootData || coupleData, coupleData);
 							isGlobalTransitioning = false;
 						})
