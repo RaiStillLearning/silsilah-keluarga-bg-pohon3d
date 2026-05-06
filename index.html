@@ -233,19 +233,27 @@
 			#d3-overlay.active #d3-sidebar-toggle.visible {
 				display: flex;
 			}
+			/* Custom push sidebar */
+			#d3-sidebar {
+				position: fixed;
+				top: 0; left: -280px;
+				width: 280px; height: 100%;
+				background: white;
+				z-index: 1001;
+				transition: left 0.3s ease;
+				box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+				overflow-y: auto;
+			}
+			#d3-sidebar.open { left: 0; }
 			#d3-container {
 				transition: margin-left 0.3s ease;
-				margin-left: 280px;
+				margin-left: 0;
 			}
-			#d3-container.sidebar-hidden {
-				margin-left: 0 !important;
-			}
+			#d3-container.sidebar-open { margin-left: 280px; }
 			.d3-controls {
 				transition: margin-left 0.3s ease;
 			}
-			.d3-controls.sidebar-open {
-				margin-left: 280px;
-			}
+			.d3-controls.sidebar-open { margin-left: 280px; }
 		</style>
 	</head>
 	<body>
@@ -278,13 +286,13 @@
 				<i class="bi bi-list"></i>
 			</button>
 
-			<!-- Sidebar (D3 Overlay) -->
-			<div class="offcanvas offcanvas-start offcanvas-custom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="d3-sidebar" style="width: 280px; z-index: 1001;">
-				<div class="offcanvas-header border-bottom">
-					<h5 class="offcanvas-title fw-bold text-success">Menu Silsilah</h5>
+			<!-- Sidebar (Custom Push) -->
+			<div id="d3-sidebar">
+				<div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+					<h5 class="fw-bold text-success mb-0">Menu Silsilah</h5>
 					<button type="button" class="btn-close" id="d3-sidebar-close"></button>
 				</div>
-				<div class="offcanvas-body">
+				<div class="p-3">
 					<nav class="nav flex-column">
 						<a class="sidebar-link" href="#" onclick="navTo('L2tlZ2lhdGFu'); return false;">📅 Kegiatan</a>
 						<a class="sidebar-link" href="#" onclick="navTo('L2tldWFuZ2Fu'); return false;">💰 Laporan Keuangan</a>
@@ -302,7 +310,7 @@
 				<button class="d3-btn" id="d3-up-btn">↑ Previous Generation</button>
 				<button class="d3-btn" id="d3-open-mulia-btn" style="display:none; background: #e8f5e9; border-color: #81c784; color: #2e7d32;">Buka Tab Keluarga Mulia </button>
 			</div>
-			<div id="d3-container" class="sidebar-hidden" style="margin-left: 0;"></div>
+			<div id="d3-container" style="margin-left: 0;"></div>
 		</div>
 
 		<!-- Modals -->
@@ -1138,28 +1146,31 @@
 				document.getElementById('d3-back-btn').click();
 			});
 
-			// Sidebar Toggle Logic
+			// Sidebar Toggle Logic (Custom Push)
 			const sidebarEl = document.getElementById('d3-sidebar');
-			const sidebar = new bootstrap.Offcanvas(sidebarEl);
 			const d3Container = document.getElementById('d3-container');
 
+			function openSidebar() {
+				sidebarEl.classList.add('open');
+				d3Container.classList.add('sidebar-open');
+				document.querySelector('.d3-controls').classList.add('sidebar-open');
+				document.getElementById('d3-sidebar-toggle').classList.remove('visible');
+			}
+
+			function closeSidebar() {
+				sidebarEl.classList.remove('open');
+				d3Container.classList.remove('sidebar-open');
+				document.querySelector('.d3-controls').classList.remove('sidebar-open');
+				document.getElementById('d3-sidebar-toggle').classList.add('visible');
+			}
+
 			document.getElementById('d3-sidebar-toggle').addEventListener('click', () => {
-				sidebar.toggle();
+				if (sidebarEl.classList.contains('open')) closeSidebar();
+				else openSidebar();
 			});
 
 			document.getElementById('d3-sidebar-close').addEventListener('click', () => {
-				sidebar.hide();
-			});
-
-			sidebarEl.addEventListener('show.bs.offcanvas', () => {
-				d3Container.classList.remove('sidebar-hidden');
-				document.querySelector('.d3-controls').classList.add('sidebar-open');
-				document.getElementById('d3-sidebar-toggle').classList.remove('visible');
-			});
-			sidebarEl.addEventListener('hide.bs.offcanvas', () => {
-				d3Container.classList.add('sidebar-hidden');
-				document.querySelector('.d3-controls').classList.remove('sidebar-open');
-				document.getElementById('d3-sidebar-toggle').classList.add('visible');
+				closeSidebar();
 			});
 
 			// Helper to draw a line between two 3D positions to show connection
