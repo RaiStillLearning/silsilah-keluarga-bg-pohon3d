@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verifikasi Email - Keluarga Besar Silsilah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+      :root { --primary-color: #2e7d32; }
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0; height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+        overflow: hidden; background-color: #1a1a1a;
+      }
+      .bg-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url("/assets/login-bg.jpg");
+        background-size: cover; background-position: center;
+        filter: brightness(0.9); z-index: -2;
+      }
+      .bg-gradient-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(46,125,50,0.4) 100%);
+        z-index: -1;
+      }
+      .otp-card {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(15px);
+        border-radius: 24px; padding: 40px;
+        width: 100%; max-width: 420px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.2);
+        text-align: center;
+      }
+      .logo-circle {
+        width: 70px; height: 70px;
+        background: var(--primary-color); color: white;
+        border-radius: 50%; display: flex;
+        align-items: center; justify-content: center;
+        font-size: 32px; margin: 0 auto 15px;
+        box-shadow: 0 10px 20px rgba(46,125,50,0.3);
+      }
+      .otp-inputs {
+        display: flex; gap: 10px;
+        justify-content: center; margin: 25px 0;
+      }
+      .otp-inputs input {
+        width: 50px; height: 58px;
+        text-align: center; font-size: 24px; font-weight: 700;
+        border: 2px solid #ddd; border-radius: 14px;
+        background: rgba(255,255,255,0.9);
+        transition: all 0.3s;
+        outline: none;
+      }
+      .otp-inputs input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(46,125,50,0.2);
+        transform: scale(1.05);
+      }
+      .otp-inputs input.filled {
+        border-color: var(--primary-color);
+        background: #e8f5e9;
+      }
+      .btn-verify {
+        background: var(--primary-color); border: none;
+        border-radius: 12px; padding: 12px;
+        font-weight: 600; transition: all 0.3s; color: white;
+        width: 100%;
+      }
+      .btn-verify:hover {
+        background: #1b5e20; transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white;
+      }
+      .btn-verify:disabled {
+        background: #aaa; transform: none; cursor: not-allowed;
+      }
+      .resend-link {
+        color: #666; font-size: 13px; margin-top: 15px;
+      }
+      .resend-link a {
+        color: var(--primary-color); font-weight: 600;
+        text-decoration: none; cursor: pointer;
+      }
+      .resend-link a:hover { text-decoration: underline; }
+      .resend-link a.disabled {
+        color: #aaa; pointer-events: none;
+      }
+      .alert-custom {
+        border-radius: 12px; display: none;
+        font-size: 13px; margin-top: 15px; text-align: left;
+      }
+      .email-display {
+        background: #f0f0f0; border-radius: 8px;
+        padding: 8px 16px; display: inline-block;
+        font-weight: 600; font-size: 14px; color: #333;
+        margin-top: 5px;
+      }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+      }
+      .shake { animation: shake 0.3s ease 2; }
+    </style>
+  </head>
+  <body>
+    <div class="bg-overlay"></div>
+    <div class="bg-gradient-overlay"></div>
+
+    <div class="otp-card" id="otpCard">
+      <div class="logo-circle"><i class="bi bi-envelope-check-fill"></i></div>
+      <h3 class="fw-bold mt-2">Verifikasi Email</h3>
+      <p class="text-muted small">Masukkan kode 6 digit yang telah dikirim ke</p>
+      <div class="email-display" id="emailDisplay">email@contoh.com</div>
+
+      <div class="otp-inputs" id="otpInputs">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      </div>
+
+      <button class="btn btn-verify" id="verifyBtn" disabled>
+        <span class="spinner-border spinner-border-sm" id="verifySpinner" style="display:none" role="status"></span>
+        Verifikasi
+      </button>
+
+      <div class="alert alert-danger alert-custom" id="errorAlert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i><span id="errorMsg"></span>
+      </div>
+      <div class="alert alert-success alert-custom" id="successAlert">
+        <i class="bi bi-check-circle-fill me-2"></i><span id="successMsg"></span>
+      </div>
+
+      <div class="resend-link">
+        Tidak menerima kode? <a id="resendLink" onclick="resendOTP()">Kirim ulang</a>
+        <span id="resendTimer" style="display:none; color: #999;"></span>
+      </div>
+
+      <div style="margin-top: 20px; font-size: 12px;">
+        <a href="/login" style="color: #666; text-decoration: none;">← Kembali ke Login</a>
+      </div>
+    </div>
+
+    <script src="security.js"></script>
+    <script>
+      // Get email from URL params or localStorage
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email') || localStorage.getItem('pending_verify_email') || '';
+      document.getElementById('emailDisplay').textContent = email || 'Email tidak ditemukan';
+
+      // OTP Input Logic
+      const inputs = document.querySelectorAll('#otpInputs input');
+      const verifyBtn = document.getElementById('verifyBtn');
+
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const val = e.target.value.replace(/[^0-9]/g, '');
+          e.target.value = val;
+          
+          if (val) {
+            e.target.classList.add('filled');
+            if (index < inputs.length - 1) inputs[index + 1].focus();
+          } else {
+            e.target.classList.remove('filled');
+          }
+          checkOTPComplete();
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !e.target.value && index > 0) {
+            inputs[index - 1].focus();
+            inputs[index - 1].value = '';
+            inputs[index - 1].classList.remove('filled');
+          }
+        });
+
+        // Handle paste
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+          paste.split('').forEach((char, i) => {
+            if (inputs[index + i]) {
+              inputs[index + i].value = char;
+              inputs[index + i].classList.add('filled');
+            }
+          });
+          const nextIdx = Math.min(index + paste.length, inputs.length - 1);
+          inputs[nextIdx].focus();
+          checkOTPComplete();
+        });
+      });
+
+      function checkOTPComplete() {
+        const otp = Array.from(inputs).map(i => i.value).join('');
+        verifyBtn.disabled = otp.length !== 6;
+      }
+
+      function getOTP() {
+        return Array.from(inputs).map(i => i.value).join('');
+      }
+
+      // Verify OTP
+      verifyBtn.addEventListener('click', async () => {
+        const otp = getOTP();
+        if (otp.length !== 6) return;
+
+        document.getElementById('errorAlert').style.display = 'none';
+        document.getElementById('successAlert').style.display = 'none';
+        verifyBtn.disabled = true;
+        document.getElementById('verifySpinner').style.display = 'inline-block';
+
+        const result = await window.verifyOTP(email, otp);
+
+        document.getElementById('verifySpinner').style.display = 'none';
+
+        if (result.success) {
+          document.getElementById('successMsg').textContent = 'Email berhasil diverifikasi! Mengalihkan ke login...';
+          document.getElementById('successAlert').style.display = 'block';
+          localStorage.removeItem('pending_verify_email');
+          setTimeout(() => { window.location.href = '/login'; }, 2000);
+        } else {
+          document.getElementById('errorMsg').textContent = result.message;
+          document.getElementById('errorAlert').style.display = 'block';
+          verifyBtn.disabled = false;
+          document.getElementById('otpCard').classList.add('shake');
+          setTimeout(() => document.getElementById('otpCard').classList.remove('shake'), 600);
+          // Clear inputs
+          inputs.forEach(i => { i.value = ''; i.classList.remove('filled'); });
+          inputs[0].focus();
+        }
+      });
+
+      // Resend OTP with cooldown
+      let resendCooldown = 0;
+      function resendOTP() {
+        if (resendCooldown > 0) return;
+        
+        window.resendVerification(email).then(result => {
+          if (result.success) {
+            document.getElementById('successMsg').textContent = 'Kode baru telah dikirim ke email Anda.';
+            document.getElementById('successAlert').style.display = 'block';
+          } else {
+            document.getElementById('errorMsg').textContent = result.message;
+            document.getElementById('errorAlert').style.display = 'block';
+          }
+        });
+
+        // Start 60s cooldown
+        resendCooldown = 60;
+        const resendLink = document.getElementById('resendLink');
+        const resendTimer = document.getElementById('resendTimer');
+        resendLink.classList.add('disabled');
+        resendTimer.style.display = 'inline';
+
+        const interval = setInterval(() => {
+          resendCooldown--;
+          resendTimer.textContent = `(${resendCooldown}s)`;
+          if (resendCooldown <= 0) {
+            clearInterval(interval);
+            resendLink.classList.remove('disabled');
+            resendTimer.style.display = 'none';
+          }
+        }, 1000);
+      }
+
+      // Focus first input
+      inputs[0].focus();
+    </script>
+  </body>
+</html>

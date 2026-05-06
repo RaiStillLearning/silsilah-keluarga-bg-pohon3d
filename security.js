@@ -84,7 +84,8 @@
     function checkAuth() {
         const path = window.location.pathname;
         if (path === "/login" || path.includes("login.html") || 
-            path === "/register" || path.includes("register.html")) return;
+            path === "/register" || path.includes("register.html") ||
+            path === "/verify-otp" || path.includes("verify-otp.html")) return;
         
         const isAuth = localStorage.getItem(AUTH_KEY) === "true";
         if (!isAuth) {
@@ -119,11 +120,54 @@
                 return { success: false, message: result.error.message || result.error_description || "Registrasi gagal" };
             }
             if (result.id || result.user) {
-                return { success: true, message: "Akun berhasil dibuat! Silakan login." };
+                localStorage.setItem('pending_verify_email', email);
+                return { success: true, message: "Kode OTP telah dikirim ke email Anda!", needVerify: true };
             }
             return { success: false, message: result.msg || "Registrasi gagal. Coba lagi." };
         } catch (err) {
             return { success: false, message: "Koneksi ke server gagal. Periksa internet Anda." };
+        }
+    };
+
+    // --- 5b. VERIFY OTP ---
+    window.verifyOTP = async function(email, token) {
+        try {
+            const res = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ type: 'signup', email: email, token: token })
+            });
+            const data = await res.json();
+            if (res.ok && (data.access_token || data.user)) {
+                return { success: true };
+            }
+            return { success: false, message: data.error_description || data.msg || 'Kode OTP salah atau sudah expired.' };
+        } catch (err) {
+            return { success: false, message: 'Koneksi ke server gagal.' };
+        }
+    };
+
+    // --- 5c. RESEND VERIFICATION ---
+    window.resendVerification = async function(email) {
+        try {
+            const res = await fetch(`${SUPABASE_URL}/auth/v1/resend`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ type: 'signup', email: email })
+            });
+            if (res.ok) {
+                return { success: true };
+            }
+            const data = await res.json();
+            return { success: false, message: data.error_description || data.msg || 'Gagal mengirim ulang kode.' };
+        } catch (err) {
+            return { success: false, message: 'Koneksi ke server gagal.' };
         }
     };
 

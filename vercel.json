@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/login", "destination": "/login.html" },
     { "source": "/register", "destination": "/register.html" },
+    { "source": "/verify-otp", "destination": "/verify-otp.html" },
     { "source": "/kegiatan", "destination": "/kegiatan.html" },
     { "source": "/keuangan", "destination": "/keuangan.html" },
     { "source": "/memorial", "destination": "/memorial.html" },

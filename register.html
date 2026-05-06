@@ -253,7 +253,7 @@
         if (result.success) {
           document.getElementById('successMsg').textContent = result.message;
           document.getElementById('successAlert').style.display = 'block';
-          setTimeout(() => { window.location.href = '/login'; }, 2000);
+          setTimeout(() => { window.location.href = '/verify-otp?email=' + encodeURIComponent(email); }, 2000);
         } else {
           document.getElementById('errorMsg').textContent = result.message;
           document.getElementById('errorAlert').style.display = 'block';
