@@ -235,9 +235,16 @@
 			}
 			#d3-container {
 				transition: margin-left 0.3s ease;
+				margin-left: 280px;
 			}
 			#d3-container.sidebar-hidden {
 				margin-left: 0 !important;
+			}
+			.d3-controls {
+				transition: margin-left 0.3s ease;
+			}
+			.d3-controls.sidebar-open {
+				margin-left: 280px;
 			}
 		</style>
 	</head>
@@ -257,6 +264,7 @@
 						<li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L2tldWFuZ2Fu'); return false;">Laporan Keuangan</a></li>
 						<li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L21lbW9yaWFs'); return false;">In Memoriam</a></li>
 						<li class="nav-item"><a class="nav-link" href="#" onclick="navTo('L2tvbnRhay'); return false;">Kontak Pengurus</a></li>
+						<li class="nav-item"><a class="nav-link text-danger" href="#" onclick="logoutFamily(); return false;"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
 					</ul>
 				</div>
 			</div>
@@ -1145,10 +1153,12 @@
 
 			sidebarEl.addEventListener('show.bs.offcanvas', () => {
 				d3Container.classList.remove('sidebar-hidden');
+				document.querySelector('.d3-controls').classList.add('sidebar-open');
 				document.getElementById('d3-sidebar-toggle').classList.remove('visible');
 			});
 			sidebarEl.addEventListener('hide.bs.offcanvas', () => {
 				d3Container.classList.add('sidebar-hidden');
+				document.querySelector('.d3-controls').classList.remove('sidebar-open');
 				document.getElementById('d3-sidebar-toggle').classList.add('visible');
 			});
 
