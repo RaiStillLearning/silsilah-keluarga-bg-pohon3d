@@ -1077,8 +1077,18 @@
 			// Up / Previous Generation logic
 			document.getElementById('d3-up-btn').addEventListener('click', () => {
 				if (activeNode && activeNode.parent) {
+					// Collapse all siblings' children (clean up the current level)
+					if (activeNode.parent.children) {
+						activeNode.parent.children.forEach(sibling => {
+							if (sibling.children) {
+								sibling._children = sibling.children;
+								sibling.children = null;
+							}
+						});
+					}
+					// Move up to parent
 					activeNode = activeNode.parent;
-					// expand the parent if it was collapsed
+					// Expand parent's direct children (but not grandchildren)
 					if (activeNode._children) {
 						activeNode.children = activeNode._children;
 						activeNode._children = null;
