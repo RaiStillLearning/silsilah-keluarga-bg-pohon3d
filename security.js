@@ -86,6 +86,24 @@
         if (path === "/login" || path.includes("login.html") || 
             path === "/register" || path.includes("register.html") ||
             path === "/verify-otp" || path.includes("verify-otp.html")) return;
+
+        // Handle Supabase magic link callback (access_token in URL hash)
+        const hash = window.location.hash;
+        if (hash && hash.includes('access_token=')) {
+            const params = new URLSearchParams(hash.substring(1));
+            const accessToken = params.get('access_token');
+            const type = params.get('type');
+            if (accessToken && type === 'signup') {
+                localStorage.setItem(AUTH_KEY, "true");
+                localStorage.setItem(ROLE_KEY, "member");
+                localStorage.setItem("supabase_token", accessToken);
+                localStorage.removeItem("pending_verify_email");
+                // Clean URL and redirect
+                window.history.replaceState(null, '', '/');
+                window.location.replace('/');
+                return;
+            }
+        }
         
         const isAuth = localStorage.getItem(AUTH_KEY) === "true";
         if (!isAuth) {
