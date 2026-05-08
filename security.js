@@ -5,7 +5,7 @@
 (function() {
     // --- SUPABASE CONFIG ---
     const SUPABASE_URL = "https://gtuplmzrnggflusstydg.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_tWBQLp3YxXmyNTm-T-_Ahw_7qODsoc3";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0dXBsbXpybmdnZmx1c3N0eWRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MzkyMDcsImV4cCI6MjA5MzIxNTIwN30.hRqHPkQFbrTw5lFmxtDuACJdK68pwkUncDMDWgCJqNE";
 
     // --- LEGACY HASHES (fallback) ---
     const HASH_M = "d21e13f6c20c00f20f7d3682ae81c77cb77bf1ff5fc8457a6a946f7af0248f7f";
