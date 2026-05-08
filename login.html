@@ -159,6 +159,22 @@
         background: var(--primary-color);
         transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
       }
+
+      /* OTP Styles */
+      .otp-inputs input {
+        width: 45px;
+        height: 55px;
+        font-size: 24px;
+        font-weight: bold;
+        border-radius: 10px;
+        border: 2px solid #ddd;
+        text-align: center;
+      }
+      .otp-inputs input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+        outline: none;
+      }
     </style>
   </head>
   <body>
@@ -186,58 +202,78 @@
             <i class="bi bi-tree-fill"></i>
           </div>
           <h3 class="fw-bold">Selamat Datang</h3>
-          <p class="text-muted small">Akses Khusus Keluarga Besar</p>
+          <p class="text-muted small" id="loginSub">Akses Khusus Keluarga Besar</p>
         </div>
 
         <form id="loginForm">
-          <div class="mb-3">
-            <label class="form-label">Email Keluarga</label>
-            <div class="input-group">
-              <span class="input-group-text"
-                ><i class="bi bi-envelope"></i
+          <div id="passwordSection">
+            <div class="mb-3">
+              <label class="form-label">Email Keluarga</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="bi bi-envelope"></i
+                ></span>
+                <input type="email" id="username" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Kata Sandi</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  required
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  id="togglePassword"
+                  style="border-radius: 0 12px 12px 0; border-left: none"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-success btn-login w-100"
+              id="loginBtn"
+            >
+              <span
+                class="spinner-border spinner-border-sm"
+                id="loginSpinner"
+                style="display: none"
+                role="status"
               ></span>
-              <input type="email" id="username" class="form-control" required />
-            </div>
+              Masuk Sekarang
+            </button>
           </div>
 
-          <div class="mb-4">
-            <label class="form-label">Kata Sandi</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-lock"></i></span>
-              <input
-                type="password"
-                id="password"
-                class="form-control"
-                required
-              />
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="togglePassword"
-                style="border-radius: 0 12px 12px 0; border-left: none"
-              >
-                <i class="bi bi-eye"></i>
-              </button>
+          <div id="otpSection" style="display: none;">
+            <p class="text-center text-muted small mb-3">Masukkan 6 digit kode yang dikirim ke email Anda</p>
+            <div class="otp-inputs d-flex gap-2 justify-content-center mb-4">
+              <input type="text" maxlength="1" class="otp-input" />
+              <input type="text" maxlength="1" class="otp-input" />
+              <input type="text" maxlength="1" class="otp-input" />
+              <input type="text" maxlength="1" class="otp-input" />
+              <input type="text" maxlength="1" class="otp-input" />
+              <input type="text" maxlength="1" class="otp-input" />
+            </div>
+            <button type="button" class="btn btn-success w-100 mb-3" id="verifyOtpBtn">
+              <span class="spinner-border spinner-border-sm" id="otpSpinner" style="display: none"></span>
+              Verifikasi & Masuk
+            </button>
+            <div class="text-center">
+              <a href="#" id="backToLogin" class="small text-muted text-decoration-none">← Kembali ke Login</a>
             </div>
           </div>
-
-          <button
-            type="submit"
-            class="btn btn-success btn-login w-100"
-            id="loginBtn"
-          >
-            <span
-              class="spinner-border spinner-border-sm"
-              id="loginSpinner"
-              style="display: none"
-              role="status"
-            ></span>
-            Masuk Sekarang
-          </button>
 
           <div class="alert alert-danger alert-custom" id="errorAlert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i> Username atau
-            password salah.
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> <span id="errorMsg">Username atau password salah.</span>
           </div>
         </form>
 
@@ -254,8 +290,19 @@
       const loginBtn = document.getElementById("loginBtn");
       const loginSpinner = document.getElementById("loginSpinner");
       const errorAlert = document.getElementById("errorAlert");
+      const errorMsg = document.getElementById("errorMsg");
       const togglePassword = document.getElementById("togglePassword");
       const passwordInput = document.getElementById("password");
+
+      const passwordSection = document.getElementById("passwordSection");
+      const otpSection = document.getElementById("otpSection");
+      const loginSub = document.getElementById("loginSub");
+      const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+      const otpSpinner = document.getElementById("otpSpinner");
+      const backToLogin = document.getElementById("backToLogin");
+      const otpInputs = document.querySelectorAll(".otp-input");
+
+      let currentEmail = "";
 
       togglePassword.addEventListener("click", function () {
         const type =
@@ -267,11 +314,34 @@
         this.querySelector("i").classList.toggle("bi-eye-slash");
       });
 
+      // OTP Input Handling
+      otpInputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+          if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
+          }
+        });
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && e.target.value === "" && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+      });
+
+      backToLogin.addEventListener("click", (e) => {
+        e.preventDefault();
+        otpSection.style.display = "none";
+        passwordSection.style.display = "block";
+        loginSub.textContent = "Akses Khusus Keluarga Besar";
+        errorAlert.style.display = "none";
+      });
+
       loginForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const username = document.getElementById("username").value;
         const password = passwordInput.value;
+        currentEmail = username;
 
         errorAlert.style.display = "none";
         loginBtn.disabled = true;
@@ -281,24 +351,27 @@
           const success = await window.verifyFamilyLogin(
             username,
             password,
-            true,
+            true, // skip redirect
           );
 
           if (success) {
-            document.getElementById("entryOverlay").style.display = "flex";
-            setTimeout(() => {
-              document.getElementById("loaderProgress").style.width = "100%";
-            }, 50);
-
-            setTimeout(() => {
-              let target = localStorage.getItem("redirect_after_login") || "/home";
-              target = target.replace(".html", "");
-              window.location.href = target;
-              localStorage.removeItem("redirect_after_login");
-            }, 2200);
+            // Password correct, now request OTP
+            const otpRequest = await window.requestLoginOTP(username);
+            if (otpRequest.success) {
+              passwordSection.style.display = "none";
+              otpSection.style.display = "block";
+              loginSub.textContent = "Verifikasi Kode OTP";
+              otpInputs[0].focus();
+            } else {
+              errorMsg.textContent = otpRequest.message;
+              errorAlert.style.display = "block";
+              loginBtn.disabled = false;
+              loginSpinner.style.display = "none";
+            }
           } else {
             loginSpinner.style.display = "none";
             loginBtn.disabled = false;
+            errorMsg.textContent = "Email atau password salah.";
             errorAlert.style.display = "block";
             document
               .querySelector(".login-card")
@@ -313,6 +386,35 @@
               );
           }
         }, 800);
+      });
+
+      verifyOtpBtn.addEventListener("click", async () => {
+        const otp = Array.from(otpInputs).map(i => i.value).join("");
+        if (otp.length !== 6) return;
+
+        errorAlert.style.display = "none";
+        verifyOtpBtn.disabled = true;
+        otpSpinner.style.display = "inline-block";
+
+        const result = await window.verifyLoginOTP(currentEmail, otp);
+        if (result.success) {
+          document.getElementById("entryOverlay").style.display = "flex";
+          setTimeout(() => {
+            document.getElementById("loaderProgress").style.width = "100%";
+          }, 50);
+
+          setTimeout(() => {
+            let target = localStorage.getItem("redirect_after_login") || "/home";
+            target = target.replace(".html", "");
+            window.location.href = target;
+            localStorage.removeItem("redirect_after_login");
+          }, 2200);
+        } else {
+          otpSpinner.style.display = "none";
+          verifyOtpBtn.disabled = false;
+          errorMsg.textContent = result.message;
+          errorAlert.style.display = "block";
+        }
       });
     </script>
   </body>

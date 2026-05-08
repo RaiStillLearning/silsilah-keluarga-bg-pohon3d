@@ -53,6 +53,30 @@
                     'Authorization': `Bearer ${accessToken}`
                 }
             });
+        },
+
+        async sendOTP(email) {
+            const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ email, create_user: false })
+            });
+            return await res.json();
+        },
+
+        async verifyLoginOTP(email, token) {
+            const res = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ type: 'magiclink', email, token })
+            });
+            return await res.json();
         }
     };
 
@@ -186,6 +210,47 @@
             return { success: false, message: data.error_description || data.msg || 'Gagal mengirim ulang kode.' };
         } catch (err) {
             return { success: false, message: 'Koneksi ke server gagal.' };
+        }
+    };
+
+    // --- 5d. LOGIN OTP ---
+    window.requestLoginOTP = async function(email) {
+        try {
+            const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ email, create_user: false })
+            });
+            const data = await res.json();
+            // Supabase returns empty {} on success, or { error: ... } on failure
+            if (data.error || data.msg || data.code >= 400) {
+                return { success: false, message: data.error?.message || data.msg || "Gagal mengirim OTP" };
+            }
+            return { success: true };
+        } catch (err) {
+            return { success: false, message: "Koneksi ke server gagal." };
+        }
+    };
+
+    window.verifyLoginOTP = async function(email, token) {
+        try {
+            const result = await supabaseAuth.verifyLoginOTP(email, token);
+            if (result.access_token) {
+                localStorage.setItem(AUTH_KEY, "true");
+                localStorage.setItem(ROLE_KEY, "member");
+                localStorage.setItem("supabase_token", result.access_token);
+                localStorage.setItem("user_email", email);
+                if (result.user && result.user.user_metadata) {
+                    localStorage.setItem("user_name", result.user.user_metadata.full_name || email);
+                }
+                return { success: true };
+            }
+            return { success: false, message: result.error_description || "Kode OTP salah" };
+        } catch (err) {
+            return { success: false, message: "Koneksi ke server gagal." };
         }
     };
 
