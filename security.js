@@ -82,16 +82,45 @@
 
     // --- 1. ANTI-INSPECT PROTECTION ---
     function disableInspect() {
+        // Block right-click
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123) return false;
-            if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 105)) return false;
-            if (e.metaKey && e.altKey && e.keyCode == 73) return false;
-            if (e.ctrlKey && e.shiftKey && (e.keyCode == 74 || e.keyCode == 106)) return false;
-            if (e.metaKey && e.altKey && e.keyCode == 74) return false;
-            if (e.ctrlKey && e.keyCode == 85) return false;
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 67) return false;
-        };
+
+        // Block keyboard shortcuts (Win/Mac)
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode === 123) { e.preventDefault(); return false; } // F12
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; } // Ctrl+Shift+I
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; } // Ctrl+Shift+J
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; } // Ctrl+Shift+C
+            if ((e.ctrlKey || e.metaKey) && e.keyCode === 85) { e.preventDefault(); return false; }  // Ctrl+U
+            if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) { e.preventDefault(); return false; }  // Ctrl+S
+            if (e.metaKey && e.altKey && e.keyCode === 73) { e.preventDefault(); return false; }     // Cmd+Opt+I
+            if (e.metaKey && e.altKey && e.keyCode === 74) { e.preventDefault(); return false; }     // Cmd+Opt+J
+        });
+
+        // Detect DevTools via window size difference
+        const threshold = 160;
+        function detectBySize() {
+            const widthDiff = window.outerWidth - window.innerWidth;
+            const heightDiff = window.outerHeight - window.innerHeight;
+            if (widthDiff > threshold || heightDiff > threshold) {
+                document.body.innerHTML = '<div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:sans-serif;color:#666;"><p>Akses tidak diizinkan.</p></div>';
+                setTimeout(() => window.location.replace('/login'), 1000);
+            }
+        }
+        setInterval(detectBySize, 1000);
+
+        // Detect DevTools via Image id getter trick
+        const devImg = new Image();
+        Object.defineProperty(devImg, 'id', {
+            get: function() {
+                document.body.innerHTML = '';
+                window.location.replace('/login');
+            }
+        });
+        setInterval(function() {
+            console.log('%c', devImg);
+            console.clear();
+        }, 1500);
     }
 
     // --- 2. LINK MASKING / OBFUSCATION ---
