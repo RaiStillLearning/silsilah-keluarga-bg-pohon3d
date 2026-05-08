@@ -239,8 +239,9 @@
         try {
             const result = await supabaseAuth.verifyLoginOTP(email, token);
             if (result.access_token) {
+                const role = result.user?.user_metadata?.role || "member";
                 localStorage.setItem(AUTH_KEY, "true");
-                localStorage.setItem(ROLE_KEY, "member");
+                localStorage.setItem(ROLE_KEY, role);
                 localStorage.setItem("supabase_token", result.access_token);
                 localStorage.setItem("user_email", email);
                 if (result.user && result.user.user_metadata) {
@@ -260,8 +261,9 @@
         try {
             const result = await supabaseAuth.signIn(u, p);
             if (result.access_token) {
+                const role = result.user?.user_metadata?.role || "member";
                 localStorage.setItem(AUTH_KEY, "true");
-                localStorage.setItem(ROLE_KEY, "member");
+                localStorage.setItem(ROLE_KEY, role);
                 localStorage.setItem("supabase_token", result.access_token);
                 localStorage.setItem("user_email", u);
                 if (result.user && result.user.user_metadata) {
