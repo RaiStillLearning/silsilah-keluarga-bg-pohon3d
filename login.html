@@ -291,7 +291,7 @@
             }, 50);
 
             setTimeout(() => {
-              let target = localStorage.getItem("redirect_after_login") || "/";
+              let target = localStorage.getItem("redirect_after_login") || "/home";
               target = target.replace(".html", "");
               window.location.href = target;
               localStorage.removeItem("redirect_after_login");

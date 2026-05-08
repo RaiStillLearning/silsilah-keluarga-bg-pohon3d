@@ -99,8 +99,8 @@
                 localStorage.setItem("supabase_token", accessToken);
                 localStorage.removeItem("pending_verify_email");
                 // Clean URL and redirect
-                window.history.replaceState(null, '', '/');
-                window.location.replace('/');
+                window.history.replaceState(null, '', '/home');
+                window.location.replace('/home');
                 return;
             }
         }
@@ -203,7 +203,7 @@
                     localStorage.setItem("user_name", result.user.user_metadata.full_name || u);
                 }
                 if (!skip) {
-                    const r = localStorage.getItem("redirect_after_login") || "/";
+                    const r = localStorage.getItem("redirect_after_login") || "/home";
                     localStorage.removeItem("redirect_after_login");
                     window.location.replace(r.replace(".html", ""));
                 }
@@ -226,7 +226,7 @@
             localStorage.setItem(AUTH_KEY, "true");
             localStorage.setItem(ROLE_KEY, role);
             if (!skip) {
-                const r = localStorage.getItem("redirect_after_login") || "/";
+                const r = localStorage.getItem("redirect_after_login") || "/home";
                 localStorage.removeItem("redirect_after_login");
                 window.location.replace(r.replace(".html", ""));
             }
