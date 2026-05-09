@@ -36,6 +36,60 @@
         .admin-controls { display: none; }
         .action-btns { position: absolute; top: 20px; right: 20px; }
         .action-btns i { cursor: pointer; margin-left: 10px; font-size: 1.1rem; }
+
+        /* Video Memorial Card */
+        .video-memorial-card {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a2a1a 100%);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .video-memorial-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(135deg, #2e7d32, #66bb6a, #2e7d32);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.6;
+        }
+        .video-memorial-card video {
+            width: 100%;
+            max-height: 480px;
+            object-fit: cover;
+            display: block;
+            border-radius: 20px 20px 0 0;
+        }
+        .video-memorial-info {
+            padding: 28px 32px;
+            color: white;
+        }
+        .video-memorial-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(46,125,50,0.3);
+            border: 1px solid rgba(102,187,106,0.4);
+            color: #a5d6a7;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 14px;
+        }
+        .candle-icon {
+            animation: flicker 2s ease-in-out infinite;
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
+        }
     </style>
 </head>
 <body>
@@ -76,6 +130,51 @@
     </header>
 
     <main class="container py-5">
+
+        <!-- Video Memorial Section -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-9 col-xl-8">
+                <div class="video-memorial-card">
+                    <video
+                        controls
+                        preload="metadata"
+                        poster=""
+                        id="memorialVideo"
+                    >
+                        <source src="/final-memory.mp4" type="video/mp4">
+                        Browser Anda tidak mendukung pemutaran video.
+                    </video>
+                    <div class="video-memorial-info">
+                        <div class="video-memorial-badge">
+                            <span class="candle-icon">🕯️</span> In Memoriam
+                        </div>
+                        <h2 class="fw-bold mb-2" style="font-size: 1.6rem; letter-spacing: -0.5px;">
+                            Kenangan yang Abadi
+                        </h2>
+                        <p class="mb-0" style="color: #aaa; line-height: 1.7; font-size: 0.95rem;">
+                            Video ini dipersembahkan untuk mengenang jasa, cinta, dan kehangatan yang telah diberikan.
+                            Semoga kenangan indah ini senantiasa hidup di hati kita semua.
+                        </p>
+                        <div class="d-flex align-items-center gap-3 mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.08);">
+                            <div style="width: 40px; height: 40px; background: rgba(46,125,50,0.3); border-radius: 50%; display:flex; align-items:center; justify-content:center;">
+                                <i class="bi bi-camera-video-fill" style="color: #66bb6a;"></i>
+                            </div>
+                            <div>
+                                <div class="fw-semibold" style="font-size: 0.9rem;">Final Memory</div>
+                                <div style="color: #888; font-size: 0.8rem;">Keluarga Besar H. Ramli bin Mulud</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="text-center mb-5">
+            <h4 class="fw-bold" style="color: #333;">🌿 Kenangan Para Anggota</h4>
+            <p class="text-muted small">Mereka yang telah mendahului kita</p>
+        </div>
+
         <div id="memorialList" class="row g-4 justify-content-center">
             <div class="col-12 text-center py-5"><div class="spinner-border text-success"></div></div>
         </div>
